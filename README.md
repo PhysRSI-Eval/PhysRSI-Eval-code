@@ -24,7 +24,7 @@ your own machine. It covers four tasks from the paper's generalization study. Ex
 assets, Isaac Sim, the Codex CLI) are installed from their upstreams at pinned versions with one script.
 [Jump to Getting started ↓](#getting-started)
 
-![PhysRSI-Eval at a glance](https://physrsi-eval.github.io/static/img/teaser.jpg)
+![PhysRSI-Eval overview](https://physrsi-eval.github.io/static/img/teaser.jpg)
 
 ## Episodes
 
@@ -50,9 +50,11 @@ The model weights stay fixed. The agent's workspace (skills, tools, policy, memo
     round.
   - The chain stops at the first native success, or after 17 rounds.
 
-The **five axes** are A1 First-Attempt Performance, A2 Efficiency, A3 Success, A4 Budget and A5 Improvement;
-definitions are in the paper. The **tasks** are 18 RoboDojo tasks, three per difficulty stratum (D1, highest
-official success rate, to D6, lowest), covering RoboDojo's five official task categories.
+The **five axes** are A1 First-Attempt Performance, A2 Efficiency, A3 Success, A4 Budget and A5 Improvement.
+They measure the first-attempt score, how early gains appear, the best score attained, the physical budget saved
+before first success, and the fraction of first-round failures later solved; full definitions are in the paper.
+The **tasks** are 18 RoboDojo tasks, three per difficulty stratum (D1, highest official success rate, to D6,
+lowest), covering RoboDojo's five official task categories.
 
 ![Task table](https://physrsi-eval.github.io/static/img/task_table.jpg)
 
@@ -91,6 +93,9 @@ always compensate for a weakness elsewhere.
 
 ### Q2: How can we quantify Physical RSI and its scaling law?
 
+Classical scaling laws relate performance to model size and training compute, which closed-source models do not
+disclose. Following observational scaling, we instead use public benchmark scores, aggregated into spatial
+reasoning, perception, coding and harness-use factors, as the observable substitute.
 Public capability profiles reproduce the observed order of both the best score reached by K17 and the half-gain
 round T50. Interactive curves and radar plots are on the [project page](https://physrsi-eval.github.io/).
 
