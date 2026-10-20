@@ -1,0 +1,373 @@
+{
+ "Context": {
+  "user_prompt": "evaluate task",
+  "dynamic_tools": [
+   {
+    "type": "function",
+    "name": "robodojo_contract",
+    "description": "Read robot definition, coordinate frame, action semantics and fixed budget. Contains no task strategy.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {},
+     "required": [],
+     "additionalProperties": false
+    }
+   },
+   {
+    "type": "function",
+    "name": "robodojo_start",
+    "description": "Start this assigned episode exactly once and return native instruction, state and three camera images.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {},
+     "required": [],
+     "additionalProperties": false
+    }
+   },
+   {
+    "type": "function",
+    "name": "robodojo_act",
+    "description": "One bounded dual-arm EEF action, then actual ACK and three camera images.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {
+      "request_id": {
+       "type": "string"
+      },
+      "mode": {
+       "type": "string",
+       "enum": [
+        "eef"
+       ]
+      },
+      "reason": {
+       "type": "string"
+      },
+      "steps": {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 5
+      },
+      "target": {
+       "type": "object",
+       "properties": {
+        "left": {
+         "type": "object",
+         "properties": {
+          "position": {
+           "type": "array",
+           "items": {
+            "type": "number"
+           },
+           "minItems": 3,
+           "maxItems": 3
+          },
+          "quaternion_wxyz": {
+           "type": "array",
+           "items": {
+            "type": "number"
+           },
+           "minItems": 4,
+           "maxItems": 4
+          },
+          "gripper_closed": {
+           "type": "boolean"
+          }
+         },
+         "required": [
+          "position",
+          "quaternion_wxyz",
+          "gripper_closed"
+         ],
+         "additionalProperties": false
+        },
+        "right": {
+         "type": "object",
+         "properties": {
+          "position": {
+           "type": "array",
+           "items": {
+            "type": "number"
+           },
+           "minItems": 3,
+           "maxItems": 3
+          },
+          "quaternion_wxyz": {
+           "type": "array",
+           "items": {
+            "type": "number"
+           },
+           "minItems": 4,
+           "maxItems": 4
+          },
+          "gripper_closed": {
+           "type": "boolean"
+          }
+         },
+         "required": [
+          "position",
+          "quaternion_wxyz",
+          "gripper_closed"
+         ],
+         "additionalProperties": false
+        }
+       },
+       "required": [
+        "left",
+        "right"
+       ],
+       "additionalProperties": false
+      }
+     },
+     "required": [
+      "request_id",
+      "mode",
+      "reason",
+      "steps",
+      "target"
+     ],
+     "additionalProperties": false
+    }
+   },
+   {
+    "type": "function",
+    "name": "r1_notes",
+    "description": "Read or replace concise notes for this episode only. Never alters skill.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {
+      "text": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     },
+     "required": [
+      "text"
+     ],
+     "additionalProperties": false
+    }
+   }
+  ]
+ },
+ "Harness": {
+  "user_prompt": "optimize task",
+  "dynamic_tools": [
+   {
+    "type": "function",
+    "name": "robodojo_contract",
+    "description": "Read robot definition, coordinate frame, action semantics and fixed budget. Contains no task strategy.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {},
+     "required": [],
+     "additionalProperties": false
+    }
+   },
+   {
+    "type": "function",
+    "name": "robodojo_start",
+    "description": "Start this assigned episode exactly once and return native instruction, state and three camera images.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {},
+     "required": [],
+     "additionalProperties": false
+    }
+   },
+   {
+    "type": "function",
+    "name": "robodojo_act",
+    "description": "One bounded dual-arm EEF action, then actual ACK and three camera images.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {
+      "request_id": {
+       "type": "string"
+      },
+      "mode": {
+       "type": "string",
+       "enum": [
+        "eef"
+       ]
+      },
+      "reason": {
+       "type": "string"
+      },
+      "steps": {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 5
+      },
+      "target": {
+       "type": "object",
+       "properties": {
+        "left": {
+         "type": "object",
+         "properties": {
+          "position": {
+           "type": "array",
+           "items": {
+            "type": "number"
+           },
+           "minItems": 3,
+           "maxItems": 3
+          },
+          "quaternion_wxyz": {
+           "type": "array",
+           "items": {
+            "type": "number"
+           },
+           "minItems": 4,
+           "maxItems": 4
+          },
+          "gripper_closed": {
+           "type": "boolean"
+          }
+         },
+         "required": [
+          "position",
+          "quaternion_wxyz",
+          "gripper_closed"
+         ],
+         "additionalProperties": false
+        },
+        "right": {
+         "type": "object",
+         "properties": {
+          "position": {
+           "type": "array",
+           "items": {
+            "type": "number"
+           },
+           "minItems": 3,
+           "maxItems": 3
+          },
+          "quaternion_wxyz": {
+           "type": "array",
+           "items": {
+            "type": "number"
+           },
+           "minItems": 4,
+           "maxItems": 4
+          },
+          "gripper_closed": {
+           "type": "boolean"
+          }
+         },
+         "required": [
+          "position",
+          "quaternion_wxyz",
+          "gripper_closed"
+         ],
+         "additionalProperties": false
+        }
+       },
+       "required": [
+        "left",
+        "right"
+       ],
+       "additionalProperties": false
+      }
+     },
+     "required": [
+      "request_id",
+      "mode",
+      "reason",
+      "steps",
+      "target"
+     ],
+     "additionalProperties": false
+    }
+   },
+   {
+    "type": "function",
+    "name": "r1_notes",
+    "description": "Read or replace concise notes for this episode only. Never alters skill.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {
+      "text": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     },
+     "required": [
+      "text"
+     ],
+     "additionalProperties": false
+    }
+   },
+   {
+    "type": "function",
+    "name": "m1_files",
+    "description": "Own task workspace only: list, read or write skills/tools/policy/memory. Write only after running code and ACKs close. Terminal edits apply to the next ticket.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {
+      "operation": {
+       "type": "string",
+       "enum": [
+        "list",
+        "read",
+        "write"
+       ]
+      },
+      "path": {
+       "type": "string"
+      },
+      "text": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     },
+     "required": [
+      "operation",
+      "path",
+      "text"
+     ],
+     "additionalProperties": false
+    }
+   },
+   {
+    "type": "function",
+    "name": "m1_program",
+    "description": "Run one own-workspace Python program in an isolated process. tools/mcp_client.py documents supervised JSON-line calls. Every physical action is counted. No network, simulator, GPU, reset retry or external filesystem. Files remain frozen during execution.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {
+      "path": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "path"
+     ],
+     "additionalProperties": false
+    }
+   },
+   {
+    "type": "function",
+    "name": "m1_development",
+    "description": "Read only this task previous Harness evidence. List with path=\"\"; read an exact listed file with its path. Context and other tasks are unavailable.",
+    "inputSchema": {
+     "type": "object",
+     "properties": {
+      "path": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "path"
+     ],
+     "additionalProperties": false
+    }
+   }
+  ]
+ }
+}

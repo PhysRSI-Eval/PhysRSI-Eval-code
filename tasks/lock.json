@@ -1,0 +1,35 @@
+{
+ "robodojo": {
+  "repo": "https://github.com/RoboDojo-Benchmark/RoboDojo.git",
+  "commit": "726e9aabfaa642203722eb126f5eaf0f37f3e1ad",
+  "submodules": {
+   "XPolicyLab": "bb9a0b5f5136a74503b679af830bfd0a3a837d5c",
+   "third_party/IsaacLab": "afca7b09d60d8beb9c1cb28b43066499940b969b",
+   "third_party/curobo": "d17b54ce32cba095c0b000c4c58777075d11de0e"
+  }
+ },
+ "assets": {
+  "repo": "https://huggingface.co/datasets/RoboDojo-Benchmark/RoboDojo",
+  "revision": "35efbc7dedfdbeeb6e95fb749bd885d73d483e41",
+  "subdir": "Assets"
+ },
+ "codex": {
+  "package": "@openai/codex",
+  "version_in_paper": "0.156.1"
+ },
+ "files_sha256": {
+  "task/RoboDojo/tasks/stack_blocks_by_language.py": "36a83925f35c7a4caac5add328dd35cb1d346bad833d3064f455d88221e7a41e",
+  "task/RoboDojo/config/stack_blocks_by_language.yml": "4fbfed4f7fc49120831087e709a8dbdfdb4504eb143196000d5790b54eb3bc40",
+  "Assets/Eval_Layout/RoboDojo/arx_x5/0/stack_blocks_by_language_0.json": "03aa18bd083b56acb34f383611255f50fd33aec3df07fef40c52f60f710f04a8",
+  "task/RoboDojo/tasks/cover_blocks.py": "9d14931b16842b93bea8abf9a07991a93a7e663b93c5fd1695108c8b922ab862",
+  "task/RoboDojo/config/cover_blocks.yml": "68f90c85fad2b152cf7853cf48888d09ce74bb27a692ff2feacd11160771c5a7",
+  "Assets/Eval_Layout/RoboDojo/arx_x5/0/cover_blocks_0.json": "10a84eed03be80f3ba31bca0cf07c96f34a7143b0670ba0262957add36a1161c",
+  "task/RoboDojo/tasks/insert_key.py": "180978a2915744f0596fbca4ea0ad6dcb47dce005d43f06807249bc8b4d1a828",
+  "task/RoboDojo/config/insert_key.yml": "c0b409d5c020e0ad706c378b6f63b39dfe7bed4682d978907c40e1cfa7623335",
+  "Assets/Eval_Layout/RoboDojo/arx_x5/0/insert_key_0.json": "2e8349f7073e2f0c20c3bc2fff8bd3c3e0de0719e4460e62cf39d2d6f69544c9",
+  "task/RoboDojo/tasks/plug_in_charger.py": "aaa59ade46dc54f430e1148e3f6fae487970cd29eb2c07b5ff7b4045edb831b6",
+  "task/RoboDojo/config/plug_in_charger.yml": "2046b47112049e038ecfa24a8c8044fb1db84f629a4a32eeb24822157d2d4dcb",
+  "Assets/Eval_Layout/RoboDojo/arx_x5/0/plug_in_charger_0.json": "0fb33f8293090054014dc47c943d6388aa529acd2f2d4a5e2499834515012003",
+  "env_cfg/arx_x5.yml": "7691350159fdeca92fd1b0b2da36913464ccdea3f3251eefb0176aa51db0807f"
+ }
+}

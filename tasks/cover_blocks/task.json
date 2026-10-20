@@ -1,0 +1,76 @@
+{
+ "task_id": "cover_blocks",
+ "robodojo_category": "Memory",
+ "official": {
+  "success": "23/50",
+  "success_rate": 0.46,
+  "score": 49.3,
+  "source": "RoboDojo leaderboard, 50 evaluations"
+ },
+ "difficulty_stratum": "D2",
+ "scoring": {
+  "kind": "graded",
+  "tiers_pct": [
+   0,
+   0,
+   5,
+   15,
+   30,
+   100
+  ]
+ },
+ "native_horizon_steps": 800,
+ "native_instruction": "Cover the blocks from left to right, remember their colors, then uncover them in the order: red, green, and blue.",
+ "public_instruction": "Cover the blocks from left to right, remember their colors, then uncover them in the order: red, green, and blue. Leave all cups upside down after each covering or uncovering step, and avoid shifting the blocks from their original positions. Finally, reset the robot arm.",
+ "public_instruction_sha256": "67d9d5fcea24bddff001656b92204825bc3d6f55346bed9739c9c4097f67bdb1",
+ "spec_version": "s15_natural_v1",
+ "layout": {
+  "eval_seed": 0,
+  "layout_id": 0,
+  "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/cover_blocks_0.json",
+  "sha256": "10a84eed03be80f3ba31bca0cf07c96f34a7143b0670ba0262957add36a1161c"
+ },
+ "native_task_file": {
+  "path": "task/RoboDojo/tasks/cover_blocks.py",
+  "sha256": "9d14931b16842b93bea8abf9a07991a93a7e663b93c5fd1695108c8b922ab862"
+ },
+ "public_task": {
+  "task_id": "cover_blocks",
+  "task_spec_version": "s15_natural_v1",
+  "native_instruction": "Cover the blocks from left to right, remember their colors, then uncover them in the order: red, green, and blue. Leave all cups upside down after each covering or uncovering step, and avoid shifting the blocks from their original positions. Finally, reset the robot arm.",
+  "robot_and_action_contract": {
+   "action_submission_limit": 300,
+   "all_tools_limit": 600,
+   "revision_deadline_seconds": 600,
+   "action_steps": [
+    1,
+    5
+   ],
+   "control_hz": 25,
+   "renderer_requested": "isaac",
+   "physics_backend": "Isaac/PhysX",
+   "episode_wall_timeout_s": null,
+   "episode_wall_warning_s": 2700,
+   "rgb": {
+    "cameras": 3,
+    "width": 640,
+    "height": 480
+   },
+   "model": "<system model>",
+   "effort": "<system effort>"
+  },
+  "episode_budgets": {
+   "native_horizon_steps": 800,
+   "action_submissions": 300,
+   "tool_calls": 600,
+   "steps_per_action": [
+    1,
+    5
+   ],
+   "control_hz": 25,
+   "episode_wall_timeout_s": null,
+   "wall_warning_s": 2700,
+   "effective_model_time_limit_s": 4200
+  }
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "name": "gpt-6-sol",
+ "client": "codex",
+ "model": "gpt-6-sol",
+ "effort": "xhigh",
+ "revision_window_s": 1800,
+ "codex_version_in_paper": "0.156.1",
+ "codex_binary": "codex",
+ "codex_auth": "~/.codex/auth.json"
+}

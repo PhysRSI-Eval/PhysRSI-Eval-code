@@ -1,0 +1,15 @@
+{
+ "robodojo_root": "/path/to/third_party/RoboDojo",
+ "robodojo_python": "/path/to/miniconda3/envs/RoboDojo/bin/python",
+ "runs_dir": "runs",
+ "kit_cache_dir": null,
+ "ext_folders": [],
+ "gpu": 0,
+ "vulkan_index": null,
+ "layout_id": 0,
+ "extra_ld_library_path": null,
+ "program": {
+  "sandbox": "auto",
+  "python": "/usr/bin/python3"
+ }
+}

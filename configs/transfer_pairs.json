@@ -1,0 +1,17 @@
+{
+ "note": "Paper teaser (Q3) and Sec. \"Can Experience Help on a Different Task?\": the target starts from a library pooled from other tasks (never itself). These two pairs are the mechanisms highlighted in the teaser.",
+ "pairs": [
+  {
+   "target": "cover_blocks",
+   "source": "stack_blocks_by_language",
+   "reused": "closed-loop grasp-and-transfer routine (stack a block -> place a cup over a block)",
+   "observed": "Sonnet 5.5 (paper runs): from scratch first success K9; with a pooled library including stack_blocks_by_language, success at K1 after reading the stack routine. Video: docs/media/."
+  },
+  {
+   "target": "plug_in_charger",
+   "source": "insert_key",
+   "reused": "insertion routine (key into keyhole -> charger into socket)",
+   "observed": "Schematic only: no successful insert_key -> plug_in_charger transfer was observed in our runs."
+  }
+ ]
+}

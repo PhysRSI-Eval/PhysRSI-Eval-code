@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "physrsi-eval"
+version = "1.0.0"
+description = "PhysRSI-Eval reference infrastructure: physical recursive self-improvement on RoboDojo tasks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+dependencies = ["numpy", "scipy", "pillow", "msgpack", "imageio", "imageio-ffmpeg"]
+
+[tool.setuptools]
+packages = ["physrsi_eval"]
+
+[tool.setuptools.package-data]
+physrsi_eval = ["tool_specs.json"]

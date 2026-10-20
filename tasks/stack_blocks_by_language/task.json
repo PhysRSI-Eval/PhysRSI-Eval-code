@@ -1,0 +1,72 @@
+{
+ "task_id": "stack_blocks_by_language",
+ "robodojo_category": "Open",
+ "official": {
+  "success": "20/50",
+  "success_rate": 0.4,
+  "score": 48.0,
+  "source": "RoboDojo leaderboard, 50 evaluations"
+ },
+ "difficulty_stratum": "D2",
+ "scoring": {
+  "kind": "graded",
+  "tiers_pct": [
+   20,
+   100
+  ]
+ },
+ "native_horizon_steps": 400,
+ "native_instruction": "stack the blocks from bottom to top in the order of blue, yellow, and orange, then reset the robot arm.",
+ "public_instruction": "stack the blocks from bottom to top in the order of blue, yellow, and orange, then reset the robot arm.",
+ "public_instruction_sha256": "90c8c617264ab7ecd7d3bc2d01b99c47518f43731fd8f5b5947ebe4022436061",
+ "spec_version": "s8_native_v1",
+ "layout": {
+  "eval_seed": 0,
+  "layout_id": 0,
+  "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/stack_blocks_by_language_0.json",
+  "sha256": "03aa18bd083b56acb34f383611255f50fd33aec3df07fef40c52f60f710f04a8"
+ },
+ "native_task_file": {
+  "path": "task/RoboDojo/tasks/stack_blocks_by_language.py",
+  "sha256": "36a83925f35c7a4caac5add328dd35cb1d346bad833d3064f455d88221e7a41e"
+ },
+ "public_task": {
+  "task_id": "stack_blocks_by_language",
+  "task_spec_version": "s8_native_v1",
+  "native_instruction": "stack the blocks from bottom to top in the order of blue, yellow, and orange, then reset the robot arm.",
+  "robot_and_action_contract": {
+   "action_submission_limit": 300,
+   "all_tools_limit": 600,
+   "revision_deadline_seconds": 600,
+   "action_steps": [
+    1,
+    5
+   ],
+   "control_hz": 25,
+   "renderer_requested": "isaac",
+   "physics_backend": "Isaac/PhysX",
+   "episode_wall_timeout_s": null,
+   "episode_wall_warning_s": 2700,
+   "rgb": {
+    "cameras": 3,
+    "width": 640,
+    "height": 480
+   },
+   "model": "<system model>",
+   "effort": "<system effort>"
+  },
+  "episode_budgets": {
+   "native_horizon_steps": 400,
+   "action_submissions": 300,
+   "tool_calls": 600,
+   "steps_per_action": [
+    1,
+    5
+   ],
+   "control_hz": 25,
+   "episode_wall_timeout_s": null,
+   "wall_warning_s": 2700,
+   "effective_model_time_limit_s": 4200
+  }
+ }
+}

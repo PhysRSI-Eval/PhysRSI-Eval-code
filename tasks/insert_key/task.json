@@ -1,0 +1,74 @@
+{
+ "task_id": "insert_key",
+ "robodojo_category": "Precision",
+ "official": {
+  "success": "0/50",
+  "success_rate": 0.0,
+  "score": 14.4,
+  "source": "RoboDojo leaderboard, 50 evaluations"
+ },
+ "difficulty_stratum": "D4",
+ "scoring": {
+  "kind": "graded",
+  "tiers_pct": [
+   15,
+   100
+  ]
+ },
+ "native_horizon_steps": 300,
+ "native_instruction": "Pick up the key, hand it over to the other hand, insert it into the keyhole, then turn it.",
+ "public_instruction": "Pick up the key, hand it over to the other hand, insert it into the keyhole, then turn it. The key should be properly seated in the keyhole and turned to complete the operation, not left tilted at the opening.",
+ "public_instruction_sha256": "01da3ecf040b907f26ec96158488aece0b65a143327bc2bda4609c03e284bcbc",
+ "spec_version": "s17_native_budget_v2",
+ "layout": {
+  "eval_seed": 0,
+  "layout_id": 0,
+  "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/insert_key_0.json",
+  "sha256": "2e8349f7073e2f0c20c3bc2fff8bd3c3e0de0719e4460e62cf39d2d6f69544c9"
+ },
+ "native_task_file": {
+  "path": "task/RoboDojo/tasks/insert_key.py",
+  "sha256": "180978a2915744f0596fbca4ea0ad6dcb47dce005d43f06807249bc8b4d1a828"
+ },
+ "public_task": {
+  "task_id": "insert_key",
+  "task_spec_version": "s17_native_budget_v2",
+  "native_instruction": "Pick up the key, hand it over to the other hand, insert it into the keyhole, then turn it. The key should be properly seated in the keyhole and turned to complete the operation, not left tilted at the opening.",
+  "robot_and_action_contract": {
+   "model": "<system model>",
+   "effort": "<system effort>",
+   "action_submission_limit": null,
+   "all_tools_limit": null,
+   "revision_deadline_seconds": 600,
+   "action_steps": [
+    1,
+    5
+   ],
+   "control_hz": 25,
+   "renderer_requested": "isaac",
+   "physics_backend": "Isaac/PhysX",
+   "episode_wall_timeout_s": null,
+   "episode_wall_warning_s": 2700,
+   "rgb": {
+    "cameras": 3,
+    "width": 640,
+    "height": 480
+   }
+  },
+  "episode_budgets": {
+   "native_horizon_steps": 300,
+   "action_submissions": null,
+   "tool_calls": null,
+   "steps_per_action": [
+    1,
+    5
+   ],
+   "control_hz": 25,
+   "episode_wall_timeout_s": null,
+   "wall_warning_s": 2700,
+   "effective_model_time_limit_s": 4200,
+   "model_response_limit": null,
+   "limit_source": "Unmodified native RoboDojo step_lim; no extra action/tool-count cap"
+  }
+ }
+}

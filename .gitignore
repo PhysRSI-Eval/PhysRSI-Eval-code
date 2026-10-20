@@ -1,0 +1,7 @@
+__pycache__/
+*.egg-info/
+configs/local.json
+third_party/
+runs/
+videos/
+tests/_tmp/
