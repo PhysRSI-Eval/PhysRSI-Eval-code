@@ -104,9 +104,14 @@ every later tool reply.
 
 ## Reasoning meter
 
-The host measures the agent's reasoning from the app-server event stream. Time counts while a `reasoning` or
-`agentMessage` item is open, and time inside host tool calls (including running programs and the simulator) is
-excluded. At 4200 s the episode is graded at once. The next tool reply returns
+The host measures model time from the app-server event stream. A turn's wall time counts, minus the time spent
+inside host tool calls: simulator steps, the agent's programs and file I/O are excluded. This covers model
+inference and streaming.
+
+Counting only open `reasoning` items is not usable with current Codex clients. They emit a reasoning item only
+after the thinking has happened, so its open interval is about 0 s.
+
+At 4200 s the episode is graded at once. The next tool reply returns
 `{"rollout_finished": true, "reason": "effective_reasoning_time_limit"}` with the terminal feedback.
 
 ## Cross-task transfer

@@ -4,7 +4,7 @@
   python -m physrsi_eval k0        --system S --task T            # 3 Context episodes, mean score
   python -m physrsi_eval chain     --system S --task T [--chain c1] [--horizon 17]
   python -m physrsi_eval transfer  --system S --target T --source TASK=CHAIN_DIR [...] [--chain t1]
-  python -m physrsi_eval video     --chain CHAIN_DIR --out DIR
+  python -m physrsi_eval video     --chain CHAIN_DIR --out DIR [--gif]
 """
 import argparse
 import json
@@ -55,14 +55,19 @@ def main(argv=None):
     video = sub.add_parser('video')
     video.add_argument('--chain', required=True)
     video.add_argument('--out', required=True)
+    video.add_argument('--gif', action='store_true', help='also write a small cam_high time-lapse (animated WebP) per round')
     for p in sub.choices.values():
         p.add_argument('--config', default=argparse.SUPPRESS)
     args = parser.parse_args(argv)
 
     if args.command == 'video':
-        from .video import render_chain
+        from .video import preview, render_chain
         for target, frames in render_chain(args.chain, args.out):
             print(f'{target}  {frames} frames')
+            if args.gif:
+                sim = Path(args.chain) / target.stem.rsplit('-', 1)[-1] / 'sim'
+                if sim.is_dir():
+                    print(target.with_suffix('.webp'), preview(sim, target.with_suffix('.webp'), caption=target.stem))
         return
     cfg = load_config(args.config)
     runs = Path(cfg.get('runs_dir', REPO / 'runs'))

@@ -3,8 +3,7 @@
 The agent gets no system prompt and no built-in tools: shell, web search, apps,
 plugins, image tools etc. are disabled, the sandbox is read-only, and the only
 tools are the host's dynamic tools (tools.ToolHost). Reasoning time is measured
-from the client side: only time inside a 'reasoning' or 'agentMessage' item counts,
-time spent inside host tools is excluded.
+from the client side: wall time while a turn runs, minus time spent inside host tools.
 """
 import json
 import os
@@ -24,26 +23,32 @@ DISABLED_FEATURES = ('apps', 'plugins', 'remote_plugin', 'memories', 'hooks', 's
 
 
 class ReasoningMeter:
+    """Model time of a round: wall time while a turn is running, minus time spent inside host tools
+    (simulator steps, programs, file I/O). It includes model inference and streaming; it excludes
+    everything the host does. (Counting only open reasoning items undercounts badly: current Codex
+    clients emit a reasoning item only after the thinking has happened.)"""
+
     def __init__(self, limit):
-        self.limit, self.active, self.items, self.tool_depth = limit, 0.0, set(), 0
+        self.limit, self.active, self.excluded = limit, 0.0, 0.0
+        self.tool_depth, self.in_turn = 0, False
         self.last = time.monotonic()
-        self.excluded = 0.0
 
     def advance(self):
         now = time.monotonic()
         elapsed, self.last = now - self.last, now
-        if self.items and not self.tool_depth:
+        if self.in_turn and not self.tool_depth:
             self.active += elapsed
         else:
             self.excluded += elapsed
 
+    def turn(self, running):
+        self.advance()
+        self.in_turn = running
+
     def notice(self, message):
         self.advance()
-        method, item = message.get('method', ''), message.get('params', {}).get('item', {})
-        if method in ('item/started', 'item/completed') and item.get('type') in ('reasoning', 'agentMessage'):
-            (self.items.add if method == 'item/started' else self.items.discard)(item.get('id'))
-        if method == 'turn/completed':
-            self.items.clear()
+        if message.get('method') == 'turn/completed':
+            self.in_turn = False
 
     def tool(self, begin):
         self.advance()
@@ -57,7 +62,7 @@ class ReasoningMeter:
     def snapshot(self):
         self.advance()
         return dict(effective_reasoning_seconds=self.active, max_effective_reasoning_seconds=self.limit,
-                    excluded_seconds=self.excluded, clock_source='observed reasoning/agentMessage items')
+                    excluded_seconds=self.excluded, clock_source='turn wall time minus host tool time')
 
 
 class CodexAgent:
@@ -145,6 +150,7 @@ class CodexAgent:
         turn = self.request('turn/start', dict(threadId=self.thread_id, model=self.system['model'],
                                                effort=self.system['effort'], input=[dict(type='text', text=text)]))
         turn_id = turn['turn']['id']
+        meter.turn(True)
         interrupted = False
         while True:
             try:
