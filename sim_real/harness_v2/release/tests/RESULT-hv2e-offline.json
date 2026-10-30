@@ -1,0 +1,81 @@
+{
+ "T1_L4": {
+  "chain_is_original": true,
+  "first_bad": "L4 experience package: write memory/experience/K1.json and fix: action 0 call 0: tool 'magic' is not in the registry; action 0: the lesson contains the number \"",
+  "public": {
+   "success": false,
+   "text": "Revision validation: L4 experience package: write memory/experience/K1.json and fix: action 0 call 0: tool 'magic' is no"
+  },
+  "continuation": " Continue this already graded workspace revision only; fix the experience package at the p",
+  "second_bad": [
+   "283317bb6b6fdb11f90db05110500e42731ba55a1c627b9bf281b703ef6c99c1",
+   "l4_invalid_no_repair"
+  ],
+  "good": {
+   "status": "valid",
+   "frozen": true,
+   "mode": "0o444"
+  },
+  "no_alias_untouched": true,
+  "note": {
+   "ascii": true,
+   "has_path": true,
+   "chars": 918,
+   "off": true
+  },
+  "pass": true
+ },
+ "T2_context_frames": {
+  "n": 6,
+  "kinds": [
+   "inputText",
+   "inputText",
+   "inputImage",
+   "inputText",
+   "inputImage",
+   "inputText"
+  ],
+  "off": true,
+  "pass_": true
+ },
+ "T3_resume_steps": {
+  "env_step_lim": 270,
+  "meta_max": 120,
+  "reset_meta": 120,
+  "reset_json": 120,
+  "outcome_resume": {
+   "start_step": 150,
+   "steps": 120,
+   "absolute_step_lim": 270
+  },
+  "stepcap": {
+   "env_step_lim": 800,
+   "meta": 800,
+   "orig": 400,
+   "cap": 800
+  },
+  "contract": {
+   "native_horizon": 120,
+   "resume_steps": 120,
+   "native_horizon_native": 400,
+   "note": "This run resumes your earlier attempt from a restored state and allows 120 more control steps."
+  },
+  "pass": true
+ },
+ "T4_workspace_seed": {
+  "files": [
+   "skills/shared/README.md",
+   "skills/shared/insertion/SKILL.md",
+   "skills/shared/other/SKILL.md",
+   "skills/shared/pouring/SKILL.md",
+   "skills/shared/rearrangement/SKILL.md",
+   "skills/shared/sequential_striking/SKILL.md",
+   "skills/shared/thin_or_standing_pick_place/SKILL.md"
+  ],
+  "admission_digest_equal": true,
+  "helper_outside_hash": true,
+  "writable_memory": true,
+  "pass_": true
+ },
+ "all_pass": true
+}

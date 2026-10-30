@@ -1,0 +1,75 @@
+{
+ "inputs": {
+  "episode": "ctx-a46b69bbe3fe493a-2-58ac0f04",
+  "t": 50,
+  "images": [
+   "/lizekai/RSIws/artifacts/native/ctx-a46b69bbe3fe493a-2-58ac0f04/e9ca69dfc19f402ab0d717e795d858dc/observations/000000-cam_high.png",
+   "/lizekai/RSIws/artifacts/native/ctx-a46b69bbe3fe493a-2-58ac0f04/e9ca69dfc19f402ab0d717e795d858dc/observations/000000-cam_left_wrist.png",
+   "/lizekai/RSIws/artifacts/native/ctx-a46b69bbe3fe493a-2-58ac0f04/e9ca69dfc19f402ab0d717e795d858dc/observations/000000-cam_right_wrist.png"
+  ]
+ },
+ "W1": {
+  "patched": true,
+  "ascii": true,
+  "name": "insert_charger",
+  "pass": true
+ },
+ "W2": {
+  "a_unreachable": {
+   "status": "abstain",
+   "steps": 0,
+   "invoked": [],
+   "ok": true
+  },
+  "b_abstain": {
+   "status": "abstain",
+   "note": "in-hand pose v4 gave no estimate for this hold (flip flag); the insertion chain was not started; no motion was made",
+   "invoked": [],
+   "ok": true
+  },
+  "c_pose_then_refused": {
+   "status": "stopped",
+   "note": "chain stopped: abort_to_astra: refused fake action channel: no simulator in this test; control returns to you at the current state",
+   "invoked": [
+    "robodojo_act"
+   ],
+   "step_sizes_restored": true,
+   "invoke_restored": true,
+   "ok": true
+  },
+  "d_not_enabled": {
+   "status": "refused",
+   "ok": true
+  },
+  "pass": true
+ },
+ "W3": {
+  "log": {
+   "logged": 2,
+   "p": 0.8553,
+   "decision": "intervene",
+   "offer_first": [],
+   "offer_second": [],
+   "err": false
+  },
+  "offer": {
+   "logged": 2,
+   "p": 0.8553,
+   "decision": "intervene",
+   "offer_first": [],
+   "offer_second": [],
+   "err": false
+  },
+  "None": {
+   "logged": 0,
+   "p": null,
+   "decision": null,
+   "offer_first": [],
+   "offer_second": [],
+   "err": false
+  },
+  "p_ref": 0.8553,
+  "pass": true
+ },
+ "all_pass": true
+}

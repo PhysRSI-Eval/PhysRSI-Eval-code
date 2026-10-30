@@ -1,0 +1,14 @@
+{
+  "step_id": 150,
+  "metadata": {
+    "max_episode_steps": 120,
+    "resume": {
+      "start_step": 150,
+      "steps": 120,
+      "absolute_step_lim": 270
+    }
+  },
+  "continuation": {
+    "start_step": 150
+  }
+}

@@ -1,0 +1,167 @@
+{
+ "policy": "intervention_gate_v2",
+ "prereg": "macro-tools-20261027/gate/PREREG-gate-v2.md",
+ "verdict": "PASS (grouped 5-fold CV, deploy kinds)",
+ "cv_primary": {
+  "success": {
+   "gate": 0.178,
+   "always_astra": 0.061,
+   "always_intervene": 0.135,
+   "oracle_best": 0.196
+  },
+  "interventions": 34,
+  "harmful": 1,
+  "n": 163,
+  "positives": 22
+ },
+ "data_sha256": "ff4ff0876b814272dab4eddeadcdea4a59732c5a39d357a344e8a94da3dfddb4",
+ "n_train": 112,
+ "positives": 8,
+ "features": [
+  "budget_used",
+  "grip_l",
+  "grip_r",
+  "cmd_l",
+  "cmd_r",
+  "holding_l",
+  "holding_r",
+  "closes_l",
+  "closes_r",
+  "travel_rad/10",
+  "task=deposit_coin",
+  "task=plug_in_charger",
+  "kind=align_comp",
+  "kind=align_truth",
+  "kind=regrasp_chain_comp",
+  "kind=regrasp_chain_truth",
+  "kind=rg3f_comp",
+  "kind=rg3f_truth",
+  "kind=takeover_online",
+  "kind=takeover_oracle",
+  "kind=takeover_truth"
+ ],
+ "tasks": [
+  "deposit_coin",
+  "plug_in_charger"
+ ],
+ "kinds": [
+  "align_comp",
+  "align_truth",
+  "regrasp_chain_comp",
+  "regrasp_chain_truth",
+  "rg3f_comp",
+  "rg3f_truth",
+  "takeover_online",
+  "takeover_oracle",
+  "takeover_truth"
+ ],
+ "coef": [
+  -0.0805131,
+  -0.34401901,
+  0.42115273,
+  -0.58949923,
+  0.58716089,
+  1.31900876,
+  -0.44704182,
+  -0.86837042,
+  -0.61210926,
+  -1.1357926,
+  0.0,
+  0.00055719,
+  -0.9920681,
+  0.0,
+  -1.14571491,
+  0.0,
+  2.58149297,
+  0.0,
+  -0.44315277,
+  0.0,
+  0.0
+ ],
+ "intercept": -1.50561769,
+ "intervene_above": 0.65,
+ "abstain_band": [
+  0.35,
+  0.65
+ ],
+ "executor_kind_map": {
+  "insert_charger": "rg3f_comp"
+ },
+ "scope": "plug_in_charger only; executor rg3f (deploy chain); inside rg3f the CV gain over always-rg3f is not shown (CONCLUSION-gate-v2.md)",
+ "in_sample_rg3f": {
+  "n": 52,
+  "above_0_65": 33
+ },
+ "dedup_refit_required": false,
+ "dedup_note": "16:4xZ refit on deduplicated rows (one per kind, context, step); CV margins hold.",
+ "cv_primary_dedup": {
+  "n": 112,
+  "positives": 8,
+  "success": {
+   "gate": 0.134,
+   "always_astra": 0.062,
+   "always_intervene": 0.071,
+   "oracle_best": 0.134
+  },
+  "interventions": 19,
+  "harmful": 0,
+  "per_kind": {
+   "align_comp": {
+    "n": 28,
+    "intervened": 0,
+    "gate": 0.143,
+    "astra": 0.143,
+    "intervene": 0.0
+   },
+   "regrasp_chain_comp": {
+    "n": 38,
+    "intervened": 0,
+    "gate": 0.026,
+    "astra": 0.026,
+    "intervene": 0.0
+   },
+   "rg3f_comp": {
+    "n": 38,
+    "intervened": 19,
+    "gate": 0.237,
+    "astra": 0.026,
+    "intervene": 0.211
+   },
+   "takeover_online": {
+    "n": 8,
+    "intervened": 0,
+    "gate": 0.125,
+    "astra": 0.125,
+    "intervene": 0.0
+   }
+  },
+  "margins_hold": true
+ },
+ "previous_fit_with_duplicates": {
+  "coef": [
+   0.1837848,
+   -0.32372301,
+   0.82760174,
+   -0.23461968,
+   1.16829004,
+   0.29850806,
+   -0.93207179,
+   -1.79954722,
+   -1.20668578,
+   -0.4081319,
+   0.0,
+   -0.00594194,
+   -1.39694014,
+   0.0,
+   -1.53123121,
+   0.0,
+   2.62824254,
+   0.0,
+   0.29398687,
+   0.0,
+   0.0
+  ],
+  "intercept": -1.06494099,
+  "n_train": 163
+ }
+}

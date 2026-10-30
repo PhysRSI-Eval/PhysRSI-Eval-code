@@ -1,0 +1,71 @@
+{
+ "release": "/lizekai/RSIws/experiments/combined-online-20261026/deploy/releases/f15bb80aca507095746c719343c2c6e7f1ca4dd54d2af436de9e698d6f6e671a",
+ "release_name": "f15bb80aca507095746c719343c2c6e7f1ca4dd54d2af436de9e698d6f6e671a",
+ "source": "/lizekai/RSIws/experiments/combined-online-20261026/deploy/releases/8dc64d358809a3c169cdac807476b75bf28531b757dffb6a440824f987da77f0",
+ "source_name": "8dc64d358809a3c169cdac807476b75bf28531b757dffb6a440824f987da77f0",
+ "label": "combined-online-hv2e-harness-l1l3",
+ "entry_wrapper": "/lizekai/RSIws/experiments/native-ext-20261029/src/native/rsi_native_entry.py",
+ "entry_wrapper_sha256": "20c322f5b14865999119775f6d4b32758d494511238bb01bcbbe4c8cf9b4c282",
+ "pkg_files": {
+  "experience_l4.py": "4255c85e973c12acf9b82320989dbad7dc6e3993c9d60e133ee6a99950ac3546",
+  "rsiws_ext.py": "ed1583d75dd05baf3eb8e2d7ac6d0583e63d8db56ddeea6897f14ab89a1ff9b9",
+  "rg3f_deploy.py": "2b04b12f7313cd02915fafa2732ed1e3aa5d51e845c90c35e2fa3616f2b4b568",
+  "rg3f_lc.py": "b2d2f7e46607a58981d280a97e5dacdcfd0232b7684eade33b66391229fcdeca",
+  "charger_bbox.json": "318c77a15839c3cff6dcd8891f5b67a3a60b16a002f2d70a24f42d4b3503f5af",
+  "harness_l3.py": "d2baec5b6d1b892cc87edbfa2793c3dc9eeca6fcc63a8608dbf46cc18a8f1a25",
+  "gate_v2.json": "cc8cba2c32675f6841798cf10715e2ec38520b72585357147cfbf78f2f28d525",
+  "hv2e_ext.py": "bdc8a6643459f74c098e76fbbf5f1fb975c76a772b1d28769b954650d82e0ff9"
+ },
+ "added_from": {
+  "rg3f_deploy.py": {
+   "src": "/lizekai/RSIws/experiments/harness-v2-20261028/rsi_v2/backends/rg3f_deploy.py",
+   "sha256": "5e69c94f8190c254fda1a0d4418fe7838ef6d655105fac50254078801320b07e"
+  },
+  "rg3f_lc.py": {
+   "src": "/lizekai/RSIws/experiments/macro-tools-20261027/src/loc1cov_lib.py",
+   "sha256": "b2d2f7e46607a58981d280a97e5dacdcfd0232b7684eade33b66391229fcdeca"
+  },
+  "charger_bbox.json": {
+   "src": "/lizekai/RSIws/experiments/harness-v2-20261028/rsi_v2/cad/charger_bbox.json",
+   "sha256": "318c77a15839c3cff6dcd8891f5b67a3a60b16a002f2d70a24f42d4b3503f5af"
+  },
+  "harness_l3.py": {
+   "src": "/lizekai/RSIws/experiments/harness-v2-20261028/release/harness_l3.py",
+   "sha256": "d2baec5b6d1b892cc87edbfa2793c3dc9eeca6fcc63a8608dbf46cc18a8f1a25"
+  },
+  "gate_v2.json": {
+   "src": "/lizekai/RSIws/experiments/harness-v2-20261028/rsi_v2/policies/gate_v2.json",
+   "sha256": "cc8cba2c32675f6841798cf10715e2ec38520b72585357147cfbf78f2f28d525"
+  },
+  "hv2e_ext.py": {
+   "src": "/lizekai/RSIws/experiments/harness-v2-20261028/release/hv2e_ext.py",
+   "sha256": "bdc8a6643459f74c098e76fbbf5f1fb975c76a772b1d28769b954650d82e0ff9"
+  }
+ },
+ "external_frozen": {
+  "/lizekai/RSIws/experiments/macro-tools-20261027/pkg-v2/rsi/align_target.py": "8ef09c47464563ed92bae8bc28dd422fcdeeca66d5f563251c385ab60ea25e8a",
+  "/lizekai/RSIws/experiments/macro-tools-20261027/pkg-v2/rsi/grasp_compat2.py": "c735cb118fd02b10185795cce9de7bcb2124dee0169be20e919c873b26b4f129",
+  "/lizekai/RSIws/experiments/macro-tools-20261027/pkg-v15/rsi/reach_model.py": "1e0b070221122e6f6288424602948c58bb42d1d7dd3c9bd299eeb07684e79c22",
+  "/lizekai/RSIws/experiments/combined-online-20261026/plug-offline-eval/v14/src/reach.py": "9a06b600dc9d2ecbe7ef98f8cf8cb59cdc74c55335399a4286e7c4a036e39095",
+  "/lizekai/RSIws/experiments/combined-online-20261026/plug-offline-eval/v14/out/kin.json": "595d92152a06166056560e51620ee569bae5d56140f7c28b5057b9cc066482e2",
+  "/lizekai/RSIws/experiments/innerloop-20261026/track1-contact/src/detector_frozen.json": "3b0e9e73cb53a4af2c67adad583f5c1c4379ac47269fe7dba9b774059bf42efa",
+  "/lizekai/RSIws/release/PhysRSI-Eval-code/physrsi_eval/sim_server.py": "cdac6f1c1c0763f4d7af0f79bc89dc7490ae3a43d44346818d0f29c85c6e332a"
+ },
+ "unchanged_vs_hv2d": {
+  "native_runtime.py": true,
+  "native_adapter.py": true,
+  "learning.py": true,
+  "original_semantics.py": true,
+  "rsiws_ext.py": true,
+  "experience_l4.py": true,
+  "monitor_hub.py": true,
+  "stage_tools.py": true
+ },
+ "builder_sha256": "8bfc09e023896ce718040fc0413249f1eb15aaa856f7feeb581e5156a3158329",
+ "patches": [
+  "hv2d unchanged (step cap, L4, probe A/B, workspace_seed)",
+  "rg3f_deploy: vendored LC + CAD path",
+  "combined_tools: NAMES/PRIVILEGED + insert_charger branch + after_act L3 items",
+  "production: insert_charger spec appended when combined.insert_charger is a dict"
+ ]
+}

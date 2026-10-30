@@ -1,0 +1,9 @@
+{
+  "native_success": false,
+  "native_control_steps": 800,
+  "native_step_limit": 800,
+  "native_step_limit_original": 400,
+  "extended_step_cap": 800,
+  "native_success_within_native_limit": false,
+  "timeout_success": false
+}

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RSIws 实验看板</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--fg:#1d2329;--muted:#66707a;--line:#e3e6ea;--ok:#1a7f37;--warn:#b35900;--bad:#c62828;--bar:#2f6fde}
+@media (prefers-color-scheme:dark){:root{--bg:#14171a;--card:#1d2126;--fg:#e6e9ec;--muted:#98a2ad;--line:#2c3238;--ok:#4cc26b;--warn:#f0a040;--bad:#ef5350;--bar:#5b8def}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1280px;margin:0 auto;padding:16px}
+header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+h1{font-size:22px;margin:4px 0}h2{font-size:16px;margin:22px 0 8px}
+.muted{color:var(--muted)}.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.big{font-size:26px;font-weight:600}
+.kpi{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0}.kpi div span{display:block;font-size:12px;color:var(--muted)}
+.gpu{display:grid;grid-template-columns:28px 1fr 64px;gap:6px;align-items:center;font-size:12px;margin:2px 0}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--bar)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}th{color:var(--muted);font-weight:500}
+.scroll{overflow-x:auto}.tag{display:inline-block;padding:0 6px;border-radius:4px;background:var(--line);font-size:12px;margin:1px 2px}
+</style>
+</head>
+<body><main>
+<header><div><div class="muted">RSIws · 只读 · 每 30 秒刷新</div><h1>实验看板</h1></div><div id="fresh" class="muted">读取中……</div></header>
+
+<h2>主机</h2><div class="grid" id="hosts"></div>
+<h2>H200 ×4（经中转，无共享盘）</h2><div id="h200"></div>
+<h2>账号额度</h2><div class="grid" id="quota"></div>
+<h2>作业队列（共享盘 ops/jobq，各主机顺序执行，不依赖会话）</h2><div class="scroll"><table id="queues"></table></div>
+<h2>编排批次（mt_orch）</h2><div class="scroll"><table id="batches"></table></div>
+<h2>各线状态</h2><div class="scroll"><table id="lines"></table></div>
+<h2>今日里程碑</h2><div class="scroll"><table id="ms"></table></div>
+<p class="muted">数据源：主机心跳 ops/statusboard/hosts/*.json（main 实时）、ops/jobq、macro-tools STATE.json、tmux rsi-metadata、各线 STATE 文件、MILESTONES-20261030.md。生成脚本 ops/statusboard/collect.py。</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ago=t=>{if(!t)return'—';const s=(Date.now()-Date.parse(t))/1000;return s<90?Math.round(s)+' 秒前':s<5400?Math.round(s/60)+' 分钟前':(s/3600).toFixed(1)+' 小时前'};
+function hostCard(k,h,names){
+  if(!h.gpus)return'';
+  const busy=h.gpus.filter(g=>g.util>5||g.procs>0).length, util=h.gpus.length?Math.round(h.gpus.reduce((a,g)=>a+g.util,0)/h.gpus.length):0;
+  const tm=Object.entries(h.tmux||{}).map(([p,v])=>`<span class="tag" title="${esc(v.join(', '))}">${esc(names[p]||p)} × ${v.length}</span>`).join('');
+  const st=h.stale?'<span class="bad">心跳过期</span>':'<span class="ok">在线</span>';
+  return `<div class="card"><div style="display:flex;justify-content:space-between"><b>${esc(k)}</b><span class="muted">${st} · ${ago(h.utc)}</span></div>
+  <div class="kpi"><div><span>tmux 会话</span><b class="big">${h.n_tmux}</b></div><div><span>仿真进程</span><b class="big">${h.sims}</b></div>
+  <div><span>忙碌 GPU</span><b class="big">${busy}/${h.gpus.length}</b></div><div><span>平均利用率</span><b class="big">${util}%</b></div></div>
+  <div class="muted" style="font-size:12px">内存可用 ${h.mem_avail_gb??'—'} / ${h.mem_total_gb??'—'} GB · 负载 ${(h.load||0).toFixed(0)} / ${h.ncpu} 核</div>
+  ${h.gpus.map(g=>`<div class="gpu"><span>GPU${g.index}</span><div class="bar"><i style="width:${g.util}%"></i></div><span>${g.util}% · ${(g.mem_used/1024).toFixed(0)}G · ${g.procs}进程</span></div>`).join('')}
+  <div style="margin-top:6px">${tm||'<span class="muted">无 tmux 会话</span>'}</div></div>`;
+}
+async function load(){
+  let s;try{const r=await fetch('status.json?'+Date.now());s=await r.json();}catch(e){$('fresh').textContent='读取失败';return;}
+  $('fresh').textContent='更新于 '+s.generated_utc+'（'+ago(s.generated_utc)+'）';
+  const order=['main','h1','h2','h3','aux'];const hk=Object.keys(s.hosts).sort((a,b)=>(order.indexOf(a)+99)%99-(order.indexOf(b)+99)%99);
+  let hh=hk.map(k=>hostCard(k,s.hosts[k],s.line_names)).join('');
+  const known=new Set(hk);['h1','h2','aux'].filter(k=>!known.has(k)).forEach(k=>{const q=s.queues[k+'-c1'];hh+=`<div class="card"><b>${k}</b> <span class="warn">无心跳</span><div class="muted" style="font-size:12px;margin-top:6px">心跳任务已排入该机作业队列，当前任务结束后启动。队列：运行 ${q?q.running.length:0}，等待 ${q?q.pending.length:0}</div></div>`});
+  $('hosts').innerHTML=hh;
+  const H=s.h200||{};let hz='';
+  if(H.heartbeat&&H.heartbeat.gpus){hz+=hostCard('H200',H.heartbeat,s.line_names);}
+  else hz+='<div class="card warn" style="margin-bottom:10px">还没有实时心跳：需总调度经中转在 H200 上启动心跳，并把 receipts/h200_heartbeat.json 加入镜像。下面是中转记录里能看到的最新情况。</div>';
+  const ts=Object.entries(H.tmux_seen||{});
+  hz+='<div class="card" style="margin-bottom:10px"><b>中转输出里看到的 H200 tmux 会话</b><div>'+(ts.length?ts.map(([n,v])=>`<span class="tag">${esc(n)}（创建 ${esc(v.created)}，见于 ${esc(v.seen)}）</span>`).join(''):'<span class="muted">无</span>')+'</div></div>';
+  hz+='<div class="scroll"><table><tr><th>时间</th><th>发令方</th><th>命令</th><th>rc</th><th>输出（末尾）</th></tr>'+(H.commands||[]).slice(0,6).map(c=>`<tr><td class="muted">${esc(c.utc)}</td><td>${esc(c.frm)}</td><td><code>${esc(c.cmd)}</code></td><td>${esc(c.rc)}</td><td class="muted"><pre style="margin:0;white-space:pre-wrap">${esc(c.out)}</pre></td></tr>`).join('')+'</table></div>';
+  $('h200').innerHTML=hz;
+  const qa=s.quota.accounts;$('quota').innerHTML=Object.entries(qa).map(([a,v])=>{const u=Math.max(...(v.used.length?v.used:[0]));const c=u>=80?'bad':u>=50?'warn':'ok';
+    return `<div class="card"><div style="display:flex;justify-content:space-between"><b>${esc(a)}</b><span class="muted">${esc(v.time)} UTC</span></div><div class="big ${c}">${u.toFixed(0)}%</div><div class="bar"><i style="width:${u}%"></i></div><div class="muted" style="font-size:12px">${esc(v.status)} · 各窗口 ${v.used.map(x=>x.toFixed(0)+'%').join(' / ')}</div></div>`}).join('')
+    +(s.quota.errors_in_pane?`<div class="card muted">native_cli 额度不可读（窗口内 ${s.quota.errors_in_pane} 次解析错误）</div>`:'');
+  $('queues').innerHTML='<tr><th>队列</th><th>正在运行</th><th>等待</th><th>已完成</th><th>最近记录</th></tr>'+Object.entries(s.queues).map(([k,q])=>`<tr><td>${esc(k)}</td><td>${q.running.map(esc).join('<br>')||'—'}</td><td>${q.pending.length}</td><td>${q.done}</td><td class="muted">${q.log.map(esc).join('<br>')}</td></tr>`).join('');
+  $('batches').innerHTML='<tr><th>批次</th><th>阶段（STATE）</th><th>完成 / 总数（STATE）</th><th>运行中</th><th>输出目录：已出结果 / 已开始</th><th>更新</th></tr>'+s.batches.map(b=>`<tr><td>${esc(b.name)}</td><td>${esc(b.phase)}</td><td>${b.done??'—'} / ${b.jobs??'—'}</td><td>${b.running??'—'}</td><td>${b.out_dirs!=null?b.out_done+' / '+b.out_dirs:'—'}</td><td class="muted">${ago(b.updated)}</td></tr>`).join('');
+  $('lines').innerHTML='<tr><th>线</th><th>当前</th><th>结果 / 说明</th><th>下一步</th><th>更新</th></tr>'+s.lines.map(l=>`<tr><td>${esc(l.line)}</td><td>${esc(l.now)}</td><td>${esc(l.detail)}</td><td>${esc(l.next)}</td><td class="muted">${esc(l.updated)}</td></tr>`).join('');
+  $('ms').innerHTML='<tr><th>时间 (Z)</th><th>里程碑</th><th>C1 执行器</th><th>KPNet</th><th>路由器</th><th>判断</th></tr>'+s.milestones.map(m=>`<tr><td>${esc(m.time)}</td><td>${esc(m.milestone)}</td>${m.items.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('');
+}
+load();setInterval(load,30000);
+</script>
+</body></html>

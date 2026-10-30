@@ -1,0 +1,287 @@
+{
+ "rows": [
+  {
+   "ep": "ctx-a46b69bbe3fe493a-2-58ac0f04",
+   "t": 50,
+   "ref": {
+    "decision": "astra",
+    "p": 0.0006,
+    "executor": "insert_charger",
+    "reason": "router v0 (3-seed mean), lift_inhand_abstain=0"
+   },
+   "res": {
+    "log": {
+     "logged": 1,
+     "p": 0.0006,
+     "decision": "astra",
+     "mode": "log",
+     "offer": [],
+     "err": null
+    },
+    "offer": {
+     "logged": 1,
+     "p": 0.0006,
+     "decision": "astra",
+     "mode": "offer",
+     "offer": [],
+     "err": null
+    },
+    "auto": {
+     "logged": 1,
+     "p": 0.0006,
+     "decision": "astra",
+     "mode": "offer",
+     "offer": [],
+     "err": null
+    },
+    "None": {
+     "logged": 0,
+     "p": null,
+     "decision": null,
+     "mode": null,
+     "offer": [],
+     "err": null
+    }
+   },
+   "ok": true
+  },
+  {
+   "ep": "ctx-cc9588d733a64d54-8-6c654e93",
+   "t": 120,
+   "ref": {
+    "decision": "astra",
+    "p": 0.0007,
+    "executor": "insert_charger",
+    "reason": "router v0 (3-seed mean), lift_inhand_abstain=0"
+   },
+   "res": {
+    "log": {
+     "logged": 1,
+     "p": 0.0007,
+     "decision": "astra",
+     "mode": "log",
+     "offer": [],
+     "err": null
+    },
+    "offer": {
+     "logged": 1,
+     "p": 0.0007,
+     "decision": "astra",
+     "mode": "offer",
+     "offer": [],
+     "err": null
+    },
+    "auto": {
+     "logged": 1,
+     "p": 0.0007,
+     "decision": "astra",
+     "mode": "offer",
+     "offer": [],
+     "err": null
+    },
+    "None": {
+     "logged": 0,
+     "p": null,
+     "decision": null,
+     "mode": null,
+     "offer": [],
+     "err": null
+    }
+   },
+   "ok": true
+  },
+  {
+   "ep": "ctx-e2cce364b5f3489b-8-7e945090",
+   "t": 85,
+   "ref": {
+    "decision": "astra",
+    "p": 0.0006,
+    "executor": "insert_charger",
+    "reason": "router v0 (3-seed mean), lift_inhand_abstain=0"
+   },
+   "res": {
+    "log": {
+     "logged": 1,
+     "p": null,
+     "decision": "astra",
+     "mode": "log",
+     "offer": [],
+     "err": null
+    },
+    "offer": {
+     "logged": 1,
+     "p": null,
+     "decision": "astra",
+     "mode": "offer",
+     "offer": [],
+     "err": null
+    },
+    "auto": {
+     "logged": 1,
+     "p": null,
+     "decision": "astra",
+     "mode": "offer",
+     "offer": [],
+     "err": null
+    },
+    "None": {
+     "logged": 0,
+     "p": null,
+     "decision": null,
+     "mode": null,
+     "offer": [],
+     "err": null
+    }
+   },
+   "ok": true
+  },
+  {
+   "ep": "ctx-e97396e1c1374acb-2-4ce1ebfe",
+   "t": 65,
+   "ref": {
+    "decision": "intervene",
+    "p": 0.9994,
+    "executor": "insert_charger",
+    "reason": "router v0 (3-seed mean), lift_inhand_abstain=0"
+   },
+   "res": {
+    "log": {
+     "logged": 1,
+     "p": 0.9994,
+     "decision": "intervene",
+     "mode": "log",
+     "offer": [],
+     "err": null
+    },
+    "offer": {
+     "logged": 1,
+     "p": 0.9994,
+     "decision": "intervene",
+     "mode": "offer",
+     "offer": [
+      "Tool insert_charger is available; it returns the result of an automatic put-down, re-grasp, transport and insertion of the held charger, or an abstain with no motion."
+     ],
+     "err": null
+    },
+    "auto": {
+     "logged": 1,
+     "p": 0.9994,
+     "decision": "intervene",
+     "mode": "offer",
+     "offer": [
+      "Tool insert_charger is available; it returns the result of an automatic put-down, re-grasp, transport and insertion of the held charger, or an abstain with no motion."
+     ],
+     "err": null
+    },
+    "None": {
+     "logged": 0,
+     "p": null,
+     "decision": null,
+     "mode": null,
+     "offer": [],
+     "err": null
+    }
+   },
+   "ok": true
+  },
+  {
+   "ep": "ctx-e97396e1c1374acb-2-6cafb641",
+   "t": 65,
+   "ref": {
+    "decision": "intervene",
+    "p": 0.9994,
+    "executor": "insert_charger",
+    "reason": "router v0 (3-seed mean), lift_inhand_abstain=0"
+   },
+   "res": {
+    "log": {
+     "logged": 1,
+     "p": 0.9994,
+     "decision": "intervene",
+     "mode": "log",
+     "offer": [],
+     "err": null
+    },
+    "offer": {
+     "logged": 1,
+     "p": 0.9994,
+     "decision": "intervene",
+     "mode": "offer",
+     "offer": [
+      "Tool insert_charger is available; it returns the result of an automatic put-down, re-grasp, transport and insertion of the held charger, or an abstain with no motion."
+     ],
+     "err": null
+    },
+    "auto": {
+     "logged": 1,
+     "p": 0.9994,
+     "decision": "intervene",
+     "mode": "offer",
+     "offer": [
+      "Tool insert_charger is available; it returns the result of an automatic put-down, re-grasp, transport and insertion of the held charger, or an abstain with no motion."
+     ],
+     "err": null
+    },
+    "None": {
+     "logged": 0,
+     "p": null,
+     "decision": null,
+     "mode": null,
+     "offer": [],
+     "err": null
+    }
+   },
+   "ok": true
+  },
+  {
+   "ep": "ctx-e97396e1c1374acb-2-b31a4654",
+   "t": 65,
+   "ref": {
+    "decision": "intervene",
+    "p": 0.9994,
+    "executor": "insert_charger",
+    "reason": "router v0 (3-seed mean), lift_inhand_abstain=0"
+   },
+   "res": {
+    "log": {
+     "logged": 1,
+     "p": 0.9994,
+     "decision": "intervene",
+     "mode": "log",
+     "offer": [],
+     "err": null
+    },
+    "offer": {
+     "logged": 1,
+     "p": 0.9994,
+     "decision": "intervene",
+     "mode": "offer",
+     "offer": [
+      "Tool insert_charger is available; it returns the result of an automatic put-down, re-grasp, transport and insertion of the held charger, or an abstain with no motion."
+     ],
+     "err": null
+    },
+    "auto": {
+     "logged": 1,
+     "p": 0.9994,
+     "decision": "intervene",
+     "mode": "offer",
+     "offer": [
+      "Tool insert_charger is available; it returns the result of an automatic put-down, re-grasp, transport and insertion of the held charger, or an abstain with no motion."
+     ],
+     "err": null
+    },
+    "None": {
+     "logged": 0,
+     "p": null,
+     "decision": null,
+     "mode": null,
+     "offer": [],
+     "err": null
+    }
+   },
+   "ok": true
+  }
+ ],
+ "all_pass": true
+}

@@ -1,0 +1,12 @@
+{
+ "episode": "ctx-677338bf42b24288-2-7c73fd32",
+ "checks": [
+  {
+   "status": "valid",
+   "errors": [],
+   "sha256": "ae013db3e4e39637f9d821da4374b0a7fc48c7d3ce99d50527425e439139c142",
+   "at": 1793275685.9172065
+  }
+ ],
+ "status": "valid"
+}

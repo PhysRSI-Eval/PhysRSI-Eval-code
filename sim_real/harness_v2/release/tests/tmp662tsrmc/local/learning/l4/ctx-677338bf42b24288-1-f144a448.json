@@ -1,0 +1,24 @@
+{
+ "episode": "ctx-677338bf42b24288-1-f144a448",
+ "checks": [
+  {
+   "status": "repair_requested",
+   "errors": [
+    "action 0 call 0: tool 'magic' is not in the registry",
+    "action 0: the lesson contains the number \"0.1234\"; write the name of a binding entry instead (episode_local_values with a recompute method)",
+    "action 0: the lesson contains the number \"15 mm\"; write the name of a binding entry instead (episode_local_values with a recompute method)"
+   ],
+   "at": 1793275660.2948956
+  },
+  {
+   "status": "l4_invalid_no_repair",
+   "errors": [
+    "action 0 call 0: tool 'magic' is not in the registry",
+    "action 0: the lesson contains the number \"0.1234\"; write the name of a binding entry instead (episode_local_values with a recompute method)",
+    "action 0: the lesson contains the number \"15 mm\"; write the name of a binding entry instead (episode_local_values with a recompute method)"
+   ],
+   "at": 1793275660.3233962
+  }
+ ],
+ "status": "l4_invalid_no_repair"
+}
