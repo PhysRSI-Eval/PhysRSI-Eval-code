@@ -1,0 +1,18 @@
+# GT P0: official demo action cache + semantics (tool line ip4, 2026-10-31 02:3xZ)
+- Cache: experiments/gt-bc-20261031/act/<task>/<episode>.npz, 900 demos. Contents: per-step state14 / action14 (L arm 6, L grip 1, R arm 6, R grip 1, GT.md order), ee poses (state and action, 7 each, as stored), T, freq. It pairs with the router DINOv3 cache (router-rgb/official/feat, every 2nd step; `t` = file index), which is unchanged and read-only.
+- Split: split.json by episode index (0–79 train / 80–89 val / 90–99 test per task). norm.json: train-only mean/std per task, K1 (plug, key, tubes, coin) and ALL.
+- Semantics, results/P0-semantics.json, 720 train demos, all 9 tasks:
+  - action[t] == state[t+1] EXACTLY. Arm and gripper error is about 1e-16, and the ee-pose action equals the state ee pose at t+1 within 0.07 mm.
+  - k = 0 gives 0.011 rad (one step of motion), k = 2 gives 0.011 rad, and the error grows linearly after that.
+  - So the stored action is the ABSOLUTE next joint state (25 Hz) in the same units as the state: joints in rad; grippers 0..1 with 1 = open, 0 = closed, identical to the state.
+  - It is not a delta, and it is not a separate controller command. The file attribute fix_obs_shift_rgb = shift_drop_first_drop_last + rgb_jpeg is consistent with "action = next recorded state".
+  - No index shift was applied.
+- Consequences:
+  - A policy that predicts action[t..t+H-1] predicts the next H joint states. Sending it to the sim requires an absolute joint-position target interface at 25 Hz; the C1 harness has to check that its controller tracks within one step.
+  - Teacher-forced past actions are past states shifted by one step, so the history channel is pure proprio history.
+  - The free-running offline model uses state[t+1] = executed action[t] (exact on the demos).
+- Robot match, official arx_x5 demos vs our sim (C1 harness):
+  - Start joints: plug t = 0 is identical in both. All 14 dims are 0 rad with grippers 1.0; the 20 official demos and the 20 astra_v1 replays agree to 6e-13.
+  - Joint order and FK: 1247 official states matched our-sim states within 0.005 rad, and the left ee position differs by 0 mm median (max 0.73 mm). The joint order and units are the same, and so is the FK.
+  - Gripper units: the same 0..1 reading with 1 = open on both sides. The official plug minimum is 0.361 (the charger stops the fingers); ours reaches 0.0 when nothing is held.
+  - Verdict: no infra mismatch.
