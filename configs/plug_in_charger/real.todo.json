@@ -1,0 +1,43 @@
+{
+  "robodojo_root": "/lizekai/RoboDojo",
+  "robodojo_python": "/lizekai/miniconda3/envs/RoboDojo/bin/python",
+  "runs_dir": "/lizekai/RSIws/runs/plug-three-arm",
+  "kit_cache_dir": null,
+  "ext_folders": [],
+  "gpu": 0,
+  "vulkan_index": null,
+  "layout_id": 0,
+  "extra_ld_library_path": null,
+  "program": {
+    "sandbox": "auto",
+    "python": "/usr/bin/python3"
+  },
+  "plug_tools": {
+    "profile": "configs/plug_in_charger/real-tool-profile.todo.json",
+    "infer_url": "http://127.0.0.1:18807",
+    "infer_url_v4": "http://127.0.0.1:18808",
+    "locate_url": "http://127.0.0.1:18806/locate",
+    "step_cap": 340
+  },
+  "real": {
+    "host": "127.0.0.1",
+    "port": 26710,
+    "profile": {
+      "robot": "ARX X5 2023 dual arm",
+      "frame": null,
+      "eef_link": "link6",
+      "control_hz": 25,
+      "calibration_id": null,
+      "calibration_source": "TODO_real_measured"
+    }
+  },
+  "hardware": {
+    "arms": "ARX X5 2023 (\u65b9\u821f\u65e0\u9650)",
+    "wrist_cameras": {
+      "RealSense D345": 2,
+      "RealSense D405": 2
+    },
+    "head_camera": "Gemini D335L",
+    "camera_model_names": "user-provided; verify serials/SDK mapping at integration"
+  }
+}

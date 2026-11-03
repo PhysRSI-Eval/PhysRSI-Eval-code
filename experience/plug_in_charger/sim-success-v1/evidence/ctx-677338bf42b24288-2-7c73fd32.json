@@ -1,0 +1,721 @@
+{
+ "schema": "rsi-exp-v1",
+ "task": "plug_in_charger",
+ "episode": "ctx-677338bf42b24288-2-7c73fd32",
+ "outcome": {
+  "native_success": true,
+  "steps": 239
+ },
+ "action_ledger": [
+  {
+   "purpose": "localize the power-strip outlets before any own arm motion",
+   "contact_mode": "free_space",
+   "step_span": [
+    0,
+    55
+   ],
+   "method": "First Astra call: the locate_outlets helper (registry locate_mm, target outlets). The harness moved the observer arm to one wrist view above the strip and back (harness stage moves, not Astra decisions) and returned outlets_xyz and strip_yaw.",
+   "tool_calls": [
+    {
+     "tool": "locate_mm",
+     "original_tool": "locate_outlets",
+     "inputs": {
+      "target": "outlets"
+     },
+     "returned": {
+      "status": "ok",
+      "outlets_xyz_m": [
+       [
+        -0.3468,
+        -0.1056,
+        0.7858
+       ],
+       [
+        -0.3115,
+        -0.1146,
+        0.7858
+       ],
+       [
+        -0.2761,
+        -0.1236,
+        0.7858
+       ]
+      ],
+      "strip_yaw_deg": -14.3,
+      "steps_used": 55,
+      "observer_arm": "left"
+     },
+     "used_next": "yes",
+     "uptake": {
+      "later_derived_strong": 13,
+      "window_numeric": 3
+     }
+    }
+   ],
+   "outcome": "success",
+   "observed_effect": "Phase completed; the episode reached native success at step 239.",
+   "failure_mechanism": null,
+   "next_adjustment": null,
+   "reusable_lesson": "Call locate_mm(outlets) once at the start while both arms are still away from the strip; it returns outlets_xyz and strip_yaw for later target arithmetic at a cost of locate_step_cost steps. In each of the four plug successes the insertion targets were geometrically consistent with these outlets (ee-uptake check).",
+   "evidence_steps": [
+    5,
+    55
+   ],
+   "astra_reasons": []
+  },
+  {
+   "purpose": "top-down pregrasp over the charger with open gripper",
+   "contact_mode": "free_space",
+   "step_span": [
+    55,
+    110
+   ],
+   "method": "Bounded EEF increments (each within the per_action_translation_limit and per_action_rotation_limit of the CURRENT EEF) moving above the charger while rotating the gripper to point down with the jaws across the charger body (reason texts: \"approach from above\", \"align parallel jaws with charger sidewalls\"), then lowering to grasp_close_eef_z.",
+   "tool_calls": [
+    {
+     "tool": "check_reach",
+     "inputs": {
+      "arm": "left",
+      "target_pose": "not archived (Astra program not persisted)"
+     },
+     "returned": {
+      "status": "ok",
+      "reachable_from_current": true,
+      "controller_residual_mm": 0.1
+     },
+     "used_next": "unknown",
+     "uptake": {
+      "note": "check_reach replies are outside the ee-uptake parser"
+     }
+    }
+   ],
+   "outcome": "success",
+   "observed_effect": "Phase completed; the episode reached native success at step 239.",
+   "failure_mechanism": null,
+   "next_adjustment": null,
+   "reusable_lesson": "Approach the charger from above and finish the downward wrist rotation before lowering; lower to grasp_close_eef_z only after the jaws are across the charger sidewalls. Plan every increment from the current EEF: targets beyond per_action_translation_limit or per_action_rotation_limit are rejected before execution and cost a turn.",
+   "evidence_steps": [
+    60,
+    110
+   ],
+   "astra_reasons": [
+    "Move above charger while turning top-down grasp across its narrow sides.",
+    "Move toward charger with bounded wrist rotation.",
+    "Align downward grasp above charger.",
+    "Continue turn above charger with ample clearance.",
+    "Continue wrist turn and approach safe pregrasp height.",
+    "Turn fingers across charger body while remaining above contact.",
+    "Align parallel jaws with charger sidewalls.",
+    "Finish pregrasp wrist rotation.",
+    "Complete grasp alignment and lower slightly.",
+    "Set final vertical pregrasp pose.",
+    "Raise slightly from tabletop clearance and center charger between fingers."
+   ]
+  },
+  {
+   "purpose": "close on the charger body and lift to verify the grasp",
+   "contact_mode": "grasp_close",
+   "step_span": [
+    110,
+    120
+   ],
+   "method": "One decision closing the gripper at the pregrasp pose, then a vertical lift by lift_height with the gripper still closed (\"lift charger vertically to verify secure grasp\"). The harness appended an automatic post-lift in-hand report (inhand_pose).",
+   "tool_calls": [
+    {
+     "tool": "inhand_pose",
+     "original_tool": "automatic post-lift report (harness, not called by Astra)",
+     "inputs": {
+      "arm": "left",
+      "category": "charger"
+     },
+     "returned": {
+      "status": "ok",
+      "step": 120,
+      "position_in_tcp_frame_m": [
+       0.0154,
+       -0.0,
+       -0.0278
+      ],
+      "quaternion_in_tcp_frame_wxyz": [
+       0.492,
+       0.5064,
+       -0.5073,
+       -0.4942
+      ]
+     },
+     "used_next": "unknown",
+     "uptake": {
+      "window_derived_strong": 0,
+      "window_derived_specific": 0,
+      "later_derived_strong": 0,
+      "note": "geometric consistency (<1 mm xy) of later Astra targets with this estimate and the located outlets; \"unknown\" when the match is not specific to this estimate or absent (Astra code not archived)"
+     }
+    }
+   ],
+   "outcome": "success",
+   "observed_effect": "Phase completed; the episode reached native success at step 239.",
+   "failure_mechanism": null,
+   "next_adjustment": null,
+   "reusable_lesson": "Close once at the pregrasp pose and lift straight up by lift_height before any lateral motion; the automatic post-lift inhand_pose report then gives charger_offset_in_tcp for all later target arithmetic.",
+   "evidence_steps": [
+    115,
+    120
+   ],
+   "astra_reasons": [
+    "Close fingers on opposite charger sidewalls.",
+    "Lift charger vertically to verify secure grasp."
+   ]
+  },
+  {
+   "purpose": "carry the charger toward the strip while turning the pins down",
+   "contact_mode": "in_hand_transport",
+   "step_span": [
+    120,
+    170
+   ],
+   "method": "Interleaved translation toward the strip and rotation of the held charger to pins-down, in bounded increments, at a height above the strip (\"carry charger toward outlet while rotating pins downward\"). Then held the approach position for several decisions to let the orientation converge.",
+   "tool_calls": [
+    {
+     "tool": "check_reach",
+     "inputs": {
+      "arm": "left",
+      "target_pose": "not archived (Astra program not persisted)"
+     },
+     "returned": {
+      "status": "ok",
+      "reachable_from_current": true,
+      "controller_residual_mm": 0.4
+     },
+     "used_next": "unknown",
+     "uptake": {
+      "note": "check_reach replies are outside the ee-uptake parser"
+     }
+    }
+   ],
+   "outcome": "success",
+   "observed_effect": "Phase completed; the episode reached native success at step 239.",
+   "failure_mechanism": null,
+   "next_adjustment": null,
+   "reusable_lesson": "Do the pins-down reorientation during transport, combined with the translation, instead of after arrival; arrival above the outlet then needs only small settling moves.",
+   "evidence_steps": [
+    125,
+    170
+   ],
+   "astra_reasons": [
+    "Move safely backward while turning charger prongs downward.",
+    "Continue controlled transport and rotate pins toward vertical.",
+    "Carry charger toward selected outlet with clearance.",
+    "Bring charger into vertical insertion approach.",
+    "Finish turning upright before socket approach.",
+    "Converge on upright orientation above socket.",
+    "Hold clearance height and let orientation converge.",
+    "Stabilize charger upright without lowering into socket.",
+    "Complete upright alignment at fixed approach position.",
+    "Allow final angular settling before precise placement."
+   ]
+  },
+  {
+   "purpose": "first hover and descent over one outlet",
+   "contact_mode": "contact_insertion",
+   "step_span": [
+    170,
+    195
+   ],
+   "method": "Hover target computed so that the charger (link6 + R(q) * (TCP + charger_offset_in_tcp)) lies above the selected outlet of outlets_xyz, with hover_clearance above the final seated EEF height; inhand_pose re-run at the hover. Then descended toward the seat (\"lower aligned charger to thirty millimetres above seated depth\").",
+   "tool_calls": [
+    {
+     "tool": "inhand_pose",
+     "original_tool": "estimate_inhand_pose",
+     "inputs": {
+      "arm": "left",
+      "category": "charger"
+     },
+     "returned": {
+      "status": "ok",
+      "position_in_tcp_frame_m": [
+       0.0155,
+       0.0,
+       -0.0281
+      ],
+      "quaternion_in_tcp_frame_wxyz": [
+       0.4927,
+       0.5058,
+       -0.5047,
+       -0.4967
+      ],
+      "reliability": "members agree",
+      "change_since_post_lift": {
+       "reference_step": 120,
+       "shift_mm": 0.3,
+       "rotation_deg": 0.4
+      }
+     },
+     "used_next": "unknown",
+     "uptake": {
+      "window_derived_strong": 3,
+      "window_derived_specific": 0,
+      "later_derived_strong": 7,
+      "note": "geometric consistency (<1 mm xy) of later Astra targets with this estimate and the located outlets; \"unknown\" when the match is not specific to this estimate or absent (Astra code not archived)"
+     }
+    }
+   ],
+   "outcome": "failure",
+   "observed_effect": "Astra then lifted clear \"to restore vertical alignment\"; the in-hand estimate taken after lifting reported change_since_post_lift shift and rotation (see binding inhand_shift_after_first_descent).",
+   "failure_mechanism": "The charger moved in the grasp during the first descent (in-hand shift reported by inhand_pose afterwards).",
+   "next_adjustment": "Lift clear, re-estimate the in-hand pose, recompute the hover target from the fresh estimate.",
+   "reusable_lesson": "If a descent meets contact before the seat, the charger can shift in the grasp: lift clear, re-run inhand_pose and use its change_since_post_lift and the new charger_offset_in_tcp before the next descent.",
+   "evidence_steps": [
+    175,
+    195
+   ],
+   "astra_reasons": [
+    "Align charger origin above measured rightmost socket and descend to safe approach.",
+    "Settle at safe hover with pins vertically aligned.",
+    "Complete orientation convergence at hover.",
+    "Lower aligned charger to thirty millimetres above seated depth.",
+    "Settle position before final socket entry."
+   ]
+  },
+  {
+   "purpose": "lift clear, re-estimate the grasp and recentre over an outlet",
+   "contact_mode": "in_hand_transport",
+   "step_span": [
+    195,
+    215
+   ],
+   "method": "Raised the charger clear of the strip, called estimate_inhand_pose (and check_reach), then moved laterally so the charger computed from the NEW estimate lies over an outlet of outlets_xyz (\"recenter above leftmost socket with updated grasp calibration\").",
+   "tool_calls": [
+    {
+     "tool": "check_reach",
+     "inputs": {
+      "arm": "left",
+      "target_pose": "not archived (Astra program not persisted)"
+     },
+     "returned": {
+      "status": "ok",
+      "reachable_from_current": true,
+      "controller_residual_mm": 0.0
+     },
+     "used_next": "unknown",
+     "uptake": {
+      "note": "check_reach replies are outside the ee-uptake parser"
+     }
+    },
+    {
+     "tool": "inhand_pose",
+     "original_tool": "estimate_inhand_pose",
+     "inputs": {
+      "arm": "left",
+      "category": "charger"
+     },
+     "returned": {
+      "status": "ok",
+      "position_in_tcp_frame_m": [
+       0.0157,
+       -0.0,
+       -0.0146
+      ],
+      "quaternion_in_tcp_frame_wxyz": [
+       0.478,
+       0.5204,
+       -0.518,
+       -0.4821
+      ],
+      "reliability": "members agree",
+      "change_since_post_lift": {
+       "reference_step": 120,
+       "shift_mm": 13.1,
+       "rotation_deg": 2.9
+      }
+     },
+     "used_next": "yes",
+     "uptake": {
+      "window_derived_strong": 2,
+      "window_derived_specific": 2,
+      "later_derived_strong": 6,
+      "note": "geometric consistency (<1 mm xy) of later Astra targets with this estimate and the located outlets; \"unknown\" when the match is not specific to this estimate or absent (Astra code not archived)"
+     }
+    },
+    {
+     "tool": "check_reach",
+     "inputs": {
+      "arm": "left",
+      "target_pose": "not archived (Astra program not persisted)"
+     },
+     "returned": {
+      "status": "ok",
+      "reachable_from_current": true,
+      "controller_residual_mm": 0.0
+     },
+     "used_next": "unknown",
+     "uptake": {
+      "note": "check_reach replies are outside the ee-uptake parser"
+     }
+    }
+   ],
+   "outcome": "success",
+   "observed_effect": "Phase completed; the episode reached native success at step 239.",
+   "failure_mechanism": null,
+   "next_adjustment": null,
+   "reusable_lesson": "A recentring that uses the fresh charger_offset_in_tcp puts the charger back over an outlet exactly in the uptake geometry; reuse the outlets_xyz from the start, no new locate call was needed.",
+   "evidence_steps": [
+    200,
+    215
+   ],
+   "astra_reasons": [
+    "Lift clear of contact to restore vertical alignment before seating.",
+    "Clear socket and stabilize grasp for a fresh alignment estimate.",
+    "Recenter above leftmost socket with updated grasp calibration.",
+    "Finish lateral alignment over leftmost outlet."
+   ]
+  },
+  {
+   "purpose": "insert the pins straight down into the selected outlet",
+   "contact_mode": "contact_insertion",
+   "step_span": [
+    215,
+    235
+   ],
+   "method": "Vertical decrements of decreasing size at fixed x/y and orientation down to just above the seat (\"approach socket in smaller vertical increments\").",
+   "tool_calls": [],
+   "outcome": "success",
+   "observed_effect": "Phase completed; the episode reached native success at step 239.",
+   "failure_mechanism": null,
+   "next_adjustment": null,
+   "reusable_lesson": "From the hover, descend only along the vertical in seating_increment steps with x/y and orientation frozen; do not correct laterally while the pins are in the opening.",
+   "evidence_steps": [
+    220,
+    235
+   ],
+   "astra_reasons": [
+    "Lower twenty millimetres while preserving vertical pin alignment.",
+    "Approach socket in smaller vertical increments.",
+    "Bring pin tips just above socket with small controlled descent.",
+    "Stabilize just above insertion while avoiding wrist limit."
+   ]
+  },
+  {
+   "purpose": "release the seated charger",
+   "contact_mode": "release",
+   "step_span": [
+    235,
+    239
+   ],
+   "method": "Opened the gripper just above the socket with the pins aligned (\"release aligned charger over socket to let pins settle without forcing a tilted wrist\"); the episode ended in native success at this decision.",
+   "tool_calls": [],
+   "outcome": "success",
+   "observed_effect": "Phase completed; the episode reached native success at step 239.",
+   "failure_mechanism": null,
+   "next_adjustment": null,
+   "reusable_lesson": "With the pins aligned over the opening, opening the gripper just above the seat let the charger settle in; observed once, as an alternative to forcing the last part of the stroke with a tilted wrist.",
+   "evidence_steps": [
+    239
+   ],
+   "astra_reasons": [
+    "Release aligned charger over socket to let pins settle without forcing a tilted wrist."
+   ]
+  }
+ ],
+ "keyframes": [
+  {
+   "step": 115,
+   "camera": "cam_left_wrist",
+   "why": "gripper closed on the charger"
+  },
+  {
+   "step": 215,
+   "camera": "cam_high",
+   "why": "hover above the selected outlet before the vertical descent"
+  },
+  {
+   "step": 235,
+   "camera": "cam_high",
+   "why": "final seated pose before release"
+  },
+  {
+   "step": 239,
+   "camera": "cam_high",
+   "why": "terminal frame (native success)"
+  }
+ ],
+ "binding": {
+  "episode_local_values": [
+   {
+    "name": "outlets_xyz",
+    "value": [
+     [
+      -0.3468,
+      -0.1056,
+      0.7858
+     ],
+     [
+      -0.3115,
+      -0.1146,
+      0.7858
+     ],
+     [
+      -0.2761,
+      -0.1236,
+      0.7858
+     ]
+    ],
+    "unit": "m",
+    "recompute": {
+     "method": "tool",
+     "tool": "locate_mm",
+     "args": {
+      "target": "outlets"
+     }
+    }
+   },
+   {
+    "name": "strip_yaw",
+    "value": -14.3,
+    "unit": "deg",
+    "recompute": {
+     "method": "tool",
+     "tool": "locate_mm",
+     "args": {
+      "target": "outlets"
+     }
+    }
+   },
+   {
+    "name": "locate_step_cost",
+    "value": 55,
+    "unit": "steps",
+    "recompute": {
+     "method": "tool",
+     "tool": "locate_mm",
+     "args": {
+      "target": "outlets",
+      "field": "steps_used"
+     }
+    }
+   },
+   {
+    "name": "selected_outlet",
+    "value": {
+     "index": 0,
+     "xyz": [
+      -0.3468,
+      -0.1056,
+      0.7858
+     ]
+    },
+    "unit": "m",
+    "recompute": {
+     "method": "tool",
+     "tool": "locate_mm",
+     "args": {
+      "target": "outlets",
+      "select": "outlet nearest to the charger at the final hold"
+     }
+    }
+   },
+   {
+    "name": "charger_offset_in_tcp",
+    "value": {
+     "position": [
+      0.0157,
+      -0.0,
+      -0.0146
+     ],
+     "quaternion_wxyz": [
+      0.478,
+      0.5204,
+      -0.518,
+      -0.4821
+     ],
+     "step": 205
+    },
+    "unit": "m",
+    "recompute": {
+     "method": "tool",
+     "tool": "inhand_pose",
+     "args": {
+      "arm": "left",
+      "category": "charger"
+     }
+    }
+   },
+   {
+    "name": "grasp_close_eef_z",
+    "value": 0.935,
+    "unit": "m",
+    "recompute": {
+     "method": "proprio",
+     "args": {
+      "read": "current_eef left link6 z at the closing decision"
+     }
+    }
+   },
+   {
+    "name": "lift_height",
+    "value": 0.045,
+    "unit": "m",
+    "recompute": {
+     "method": "proprio",
+     "args": {
+      "read": "current_eef z after lift minus z at close"
+     }
+    }
+   },
+   {
+    "name": "hover_clearance",
+    "value": 0.044,
+    "unit": "m",
+    "recompute": {
+     "method": "proprio",
+     "args": {
+      "read": "EEF z at hover minus EEF z at the final seated hold"
+     }
+    }
+   },
+   {
+    "name": "seating_increment",
+    "value": 0.015,
+    "unit": "m",
+    "recompute": {
+     "method": "proprio",
+     "args": {
+      "read": "difference of consecutive commanded EEF z during the descent"
+     }
+    }
+   },
+   {
+    "name": "final_seat_eef_z",
+    "value": 0.836,
+    "unit": "m",
+    "recompute": {
+     "method": "proprio",
+     "args": {
+      "read": "current_eef z when the descent stops; expected from selected_outlet z + charger_offset_in_tcp"
+     }
+    }
+   },
+   {
+    "name": "home_eef_pose",
+    "value": {
+     "position": [
+      -0.2995,
+      -0.3523,
+      0.9215
+     ],
+     "quaternion_wxyz": [
+      0.707,
+      -0.0,
+      -0.0,
+      0.7072
+     ]
+    },
+    "unit": "m",
+    "recompute": {
+     "method": "proprio",
+     "args": {
+      "read": "current_eef at step 0"
+     }
+    }
+   },
+   {
+    "name": "per_action_translation_limit",
+    "value": 0.05,
+    "unit": "m",
+    "recompute": {
+     "method": "robot",
+     "args": {
+      "source": "harness pre-native rejection \"position exceeds 5cm\" (from CURRENT EEF)"
+     }
+    }
+   },
+   {
+    "name": "per_action_rotation_limit",
+    "value": 0.35,
+    "unit": "rad",
+    "recompute": {
+     "method": "robot",
+     "args": {
+      "source": "harness pre-native rejection \"rotation exceeds .35rad\""
+     }
+    }
+   },
+   {
+    "name": "tcp_offset_link6_x",
+    "value": 0.14,
+    "unit": "m",
+    "recompute": {
+     "method": "robot",
+     "args": {
+      "source": "robot constant used by the in-hand tools (TCP along link6 x)"
+     }
+    }
+   },
+   {
+    "name": "native_step_limit",
+    "value": 400,
+    "unit": "steps",
+    "recompute": {
+     "method": "robot",
+     "args": {
+      "source": "task max_episode_steps in the start packet"
+     }
+    }
+   },
+   {
+    "name": "inhand_shift_after_first_descent",
+    "value": {
+     "reference_step": 120,
+     "shift_mm": 13.1,
+     "rotation_deg": 2.9
+    },
+    "unit": "mm/deg",
+    "recompute": {
+     "method": "tool",
+     "tool": "inhand_pose",
+     "args": {
+      "arm": "left",
+      "category": "charger",
+      "field": "change_since_post_lift"
+     }
+    }
+   }
+  ],
+  "general_facts": [
+   "Each accepted decision executes a short fixed number of native control steps; one bounded EEF target per decision.",
+   "Targets are rejected before execution if they exceed per_action_translation_limit or per_action_rotation_limit relative to the CURRENT EEF, or reuse a stale request_id (rejections this episode: 2).",
+   "Astra commanded only the left arm (grasp, transport, insertion); the right arm stayed at its home pose apart from harness locate observation moves when it was the observer arm.",
+   "The charger object position used in the target arithmetic is link6 + R(q) * (tcp_offset_link6_x + charger_offset_in_tcp).",
+   "inhand_pose notes a known failure mode: about one frame in eight can be wrong by a half turn of the charger without the report noticing."
+  ]
+ },
+ "program_index": [],
+ "summary": "Native success at step 239 (limit 400) in batch hv2a TREAT (layout 15). Astra called locate_outlets first, grasped the charger top-down with the left arm, turned the pins down during transport, hovered above outlet index 0 computed from the located outlets and the in-hand estimate, inserted with pure vertical decrements and released. A first descent shifted the charger in the grasp; Astra lifted clear, re-estimated and recentred before seating.",
+ "provenance": {
+  "source": "online episode (server-authoritative native evaluation)",
+  "batch": "hv2a",
+  "branch": "TREAT",
+  "alias": "plug_in_charger__f548b0f4",
+  "layout": 15,
+  "result_file": "/lizekai/RSIws/experiments/online-plug-hv2-20261028/RESULT-hv2a.json",
+  "artefacts": "/lizekai/RSIws/artifacts/native/ctx-677338bf42b24288-2-7c73fd32",
+  "uptake_parser": "/lizekai/RSIws/experiments/ee-uptake-20261028/src/uptake.py (N=3)",
+  "program_note": "Astra program code was not persisted (K1 workspaces contain only tools/mcp_client.py); methods are written from reason texts, targets and tool replies.",
+  "rejected_turns": [
+   "stale request_id or non-EEF mode",
+   "rotation exceeds .35rad"
+  ]
+ },
+ "validation": {
+  "validator": "/lizekai/RSIws/experiments/harness-v2-20261028/rsi_v2/experience.py:validate",
+  "tools": [
+   "locate_mm",
+   "inhand_pose",
+   "check_reach",
+   "predict_outcome",
+   "align_target",
+   "grasp_compatible"
+  ],
+  "frames_checked": true,
+  "errors": []
+ }
+}

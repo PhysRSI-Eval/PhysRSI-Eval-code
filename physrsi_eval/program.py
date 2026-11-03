@@ -90,9 +90,10 @@ def run_program(host, relative, cfg):
                             error='PROGRAM_STDOUT_INVALID_JSON', stdout=line[:2048].decode('utf-8', 'replace'),
                             instruction='Program stdout must contain only newline-delimited JSON tool requests.')))
                     method = request.get('method') if isinstance(request, dict) else None
-                    if method not in ALLOWED:
+                    allowed = ALLOWED + tuple(getattr(host, 'program_extra_methods', ()))
+                    if method not in allowed:
                         raise ProgramError(json.dumps(dict(error='PROGRAM_METHOD_NOT_SUPERVISED', method=method,
-                                                           allowed=list(ALLOWED), original_requests_not_replayed=True)))
+                                                           allowed=list(allowed), original_requests_not_replayed=True)))
                     try:
                         result = host.physical(method, request.get('params', {}))
                     except (ActionRejected, ValueError, KeyError, TypeError) as error:

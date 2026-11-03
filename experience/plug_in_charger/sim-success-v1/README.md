@@ -1,0 +1,3 @@
+# Simulation success evidence
+
+Four original rsi-exp-v1 packages from hv2a/v18a, including complete action ledger, returned coordinates, source paths and provenance. Raw RGB/video/ACK assets remain at the referenced h1005090:/lizekai/RSIws/artifacts/native/<episode> addresses. These are successful tool-assisted SIM episodes. Their program workspaces were not persisted beyond the host helper, as each original package states; the portable skill is a reconstruction from the full ledgers, not a claimed original successful program workspace. The failed original K3 workspace is deliberately excluded. No real successes are included.

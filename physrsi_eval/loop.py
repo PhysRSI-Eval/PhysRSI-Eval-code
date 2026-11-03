@@ -17,7 +17,7 @@ from pathlib import Path
 
 from . import protocol as P
 from .agent import CodexAgent, ReasoningMeter
-from .sim import Episode, launch, stop
+from .backends import open_episode
 from .tools import ToolHost
 from .util import read_json, write_json
 
@@ -43,32 +43,44 @@ def run_round(cfg, system, task, folder, condition, k, *, chain=None, previous_s
     """One physical attempt (+ revision for Harness). Returns the graded receipt."""
     folder = Path(folder)
     port = free_port()
-    process, _ = launch(cfg, task['task_id'], folder / 'sim', port, gpu=cfg.get('gpu', 0),
-                        vulkan_index=cfg.get('vulkan_index'))
     agent = None
-    try:
-        episode = Episode(task, port, folder / 'sim', folder / 'client', layout_id=cfg.get('layout_id', 0))
-        workspace = folder / 'workspace' if condition == 'Harness' else None
-        host = ToolHost(condition, task, episode, k, workspace=workspace, chain=chain, program_cfg=cfg.get('program'))
-        prompt, tools = P.tool_specs(condition)
-        agent = CodexAgent(system, folder / 'agent')
-        agent.start_thread(tools)
-        meter = ReasoningMeter(P.REASONING_LIMIT_S)
-        window = system['revision_window_s']
-        status = agent.run_turn(prompt, host, meter, window)
-        if status == 'failed':  # client/service failure, not an agent decision: the round is void and rerun
-            raise RuntimeError('agent turn failed; see agent/events.jsonl')
-        revised_in_turn = host.closed and status == 'completed'
-        if not host.closed:  # the agent ended its turn before the native end: grade the state as it is
-            host.close('actor_completed')
-        write_json(folder / 'agent' / 'reasoning-budget.json', meter.snapshot())
-        if condition == 'Harness':
-            revise(agent, host, meter, window, k, previous_snapshot, revised_in_turn, folder)
-        return host.receipt
-    finally:
-        if agent is not None:
-            agent.close()
-        stop(process)
+    with open_episode(cfg, task, folder, port) as episode:
+        try:
+            workspace = folder / 'workspace' if condition == 'Harness' else None
+            host_class = ToolHost
+            extra = {}
+            if cfg.get('plug_tools'):
+                from .plug_pipeline import PlugToolHost, SPEC
+                host_class = PlugToolHost
+                extra = dict(plug_cfg=cfg['plug_tools'], backend=cfg.get('backend', 'sim'))
+            host = host_class(condition, task, episode, k, workspace=workspace, chain=chain,
+                              program_cfg=cfg.get('program'), **extra)
+            prompt, tools = P.tool_specs(condition)
+            if cfg.get('plug_tools'):
+                tools.append(SPEC)
+            if workspace:
+                from .workspace import initialize_environment, file_hashes
+                initialize_environment(workspace, cfg, task)
+                write_json(folder / 'workspace-loaded.json', dict(condition=condition, k=k,
+                           backend=cfg.get('backend', 'sim'), status='available_not_yet_read', files=file_hashes(workspace),
+                           experiment=cfg.get('experiment', {})))
+            agent = CodexAgent(system, folder / 'agent')
+            agent.start_thread(tools)
+            meter = ReasoningMeter(P.REASONING_LIMIT_S)
+            window = system['revision_window_s']
+            status = agent.run_turn(prompt, host, meter, window)
+            if status == 'failed':
+                raise RuntimeError('agent turn failed; inspect agent/events.jsonl before any resumption')
+            revised_in_turn = host.closed and status == 'completed'
+            if not host.closed:
+                host.close('actor_completed')
+            write_json(folder / 'agent' / 'reasoning-budget.json', meter.snapshot())
+            if condition == 'Harness':
+                revise(agent, host, meter, window, k, previous_snapshot, revised_in_turn, folder)
+            return host.receipt
+        finally:
+            if agent is not None:
+                agent.close()
 
 
 def revise(agent, host, meter, window, k, previous_snapshot, revised_in_turn, folder):
@@ -117,7 +129,7 @@ def run_k0(cfg, system, task, root, repeats=3):
         receipt = read_json(folder / 'client' / 'receipt.json')
         if receipt is None:
             if folder.exists():
-                folder.rename(folder.with_name(f'{folder.name}.void-{int(time.time())}'))
+                raise RuntimeError(f'{folder}: incomplete attempt; inspect original ACK/reset/revision before resuming; not replayed')
             receipt = run_round(cfg, system, task, folder, 'Context', 0)
         rows.append(receipt)
     summary = dict(task_id=task['task_id'], repeats=rows,
@@ -129,22 +141,30 @@ def run_k0(cfg, system, task, root, repeats=3):
 
 def run_chain(cfg, system, task, chain, horizon=17, seed=None):
     """K1..K<horizon>, stopping at the first native success. Resumable: committed rounds are kept,
-    an interrupted round is moved aside (it counts as an extra attempt) and rerun."""
+    an interrupted round requires explicit evidence reconciliation and is never automatically replayed."""
     chain = Path(chain)
     chain.mkdir(parents=True, exist_ok=True)
-    write_json(chain / 'chain.json', dict(task_id=task['task_id'], system=system['name'], horizon=horizon,
-                                          seeded=seed is not None, layout_id=cfg.get('layout_id', 0)))
+    from .workspace import file_hashes
+    identity = dict(task_id=task['task_id'], system=system, horizon=horizon,
+                    seed_files=file_hashes(seed) if seed else {}, config=cfg)
+    existing = read_json(chain / 'chain.json')
+    if existing is not None and existing != identity:
+        raise ValueError('chain configuration/seed changed; use a new isolated chain')
+    write_json(chain / 'chain.json', identity)
     rows = []
     for k in range(1, horizon + 1):
         folder = chain / f'K{k:02d}'
         receipt = read_json(folder / 'client' / 'receipt.json')
         if receipt is None or not (folder / 'snapshot').is_dir():
             if folder.exists():
-                folder.rename(folder.with_name(f'{folder.name}.void-{int(time.time())}'))
+                raise RuntimeError(f'{folder}: incomplete attempt; inspect original ACK/reset/revision before resuming; not replayed')
             previous = chain / f'K{k - 1:02d}' / 'snapshot' if k > 1 else None
             prepare_workspace(folder / 'workspace', previous if k > 1 else seed)
             receipt = run_round(cfg, system, task, folder, 'Harness', k, chain=chain,
                                 previous_snapshot=previous)
+            errors = P.summary_errors(folder / 'workspace', previous, k)
+            if errors:
+                raise RuntimeError('revision not committed: ' + '; '.join(errors))
             commit(folder)
         rows.append(dict(k=k, score=receipt['score'], success=receipt['native_success'],
                          reason=receipt['termination_reason'], steps=receipt['native_control_steps']))

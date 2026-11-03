@@ -1,0 +1,58 @@
+{
+  "release": "33a4c4446423aeba7993b734f4459e903f4d54d98e2dbec64f9c952e13e18f3e",
+  "source_root": "/lizekai/RSIws/experiments/combined-online-20261026/deploy/releases",
+  "files": {
+    "stage_tools.py": {
+      "source_sha256": "6c435259efcc5a96e5e72c3372624c170ea9447df07e10a2d8fc5c259e4a7335",
+      "packaged_sha256": "6c435259efcc5a96e5e72c3372624c170ea9447df07e10a2d8fc5c259e4a7335"
+    },
+    "combined_tools.py": {
+      "source_sha256": "9ac1d40f69ffc61bdcec950beb685cc8f879b16969a264a02c667a5f69dd2e8a",
+      "packaged_sha256": "9ac1d40f69ffc61bdcec950beb685cc8f879b16969a264a02c667a5f69dd2e8a"
+    },
+    "rg3f_deploy.py": {
+      "source_sha256": "2b04b12f7313cd02915fafa2732ed1e3aa5d51e845c90c35e2fa3616f2b4b568",
+      "packaged_sha256": "7518b01bb135154046c1d7ea80cf92e98a59a743831d18913e1f5b278c30eb2b"
+    },
+    "grasp_compat2.py": {
+      "source_sha256": "c735cb118fd02b10185795cce9de7bcb2124dee0169be20e919c873b26b4f129",
+      "packaged_sha256": "c735cb118fd02b10185795cce9de7bcb2124dee0169be20e919c873b26b4f129"
+    },
+    "align_target.py": {
+      "source_sha256": "8ef09c47464563ed92bae8bc28dd422fcdeeca66d5f563251c385ab60ea25e8a",
+      "packaged_sha256": "8ef09c47464563ed92bae8bc28dd422fcdeeca66d5f563251c385ab60ea25e8a"
+    },
+    "reach_model.py": {
+      "source_sha256": "1e0b070221122e6f6288424602948c58bb42d1d7dd3c9bd299eeb07684e79c22",
+      "packaged_sha256": "631ca24e46ee8df669c89c1139c32158f5984e93b66fa73ac3f33773d8bb5b8b"
+    },
+    "combined_calib.json": {
+      "source_sha256": "5f090a25a7b566ddf1cda6a374bd50788cde265c72f6118f1baafcd4cb51755f",
+      "packaged_sha256": "5f090a25a7b566ddf1cda6a374bd50788cde265c72f6118f1baafcd4cb51755f"
+    },
+    "robot_kin.json": {
+      "source_sha256": "683b523b74c256b24b9dedb08097e749066b70628b76fc0c9f4dfc81fec34395",
+      "packaged_sha256": "683b523b74c256b24b9dedb08097e749066b70628b76fc0c9f4dfc81fec34395"
+    },
+    "charger_bbox.json": {
+      "source_sha256": "318c77a15839c3cff6dcd8891f5b67a3a60b16a002f2d70a24f42d4b3503f5af",
+      "packaged_sha256": "318c77a15839c3cff6dcd8891f5b67a3a60b16a002f2d70a24f42d4b3503f5af"
+    },
+    "rg3f_lc.py": {
+      "source_sha256": "b2d2f7e46607a58981d280a97e5dacdcfd0232b7684eade33b66391229fcdeca",
+      "extracted_functions": [
+        "_coarse",
+        "_joints",
+        "_q_of"
+      ],
+      "packaged_sha256": "39f82a259be831d652ee899f71ec111eed0a1335e862e6706592b187fd2814a2"
+    }
+  },
+  "changes": [
+    "package-relative imports",
+    "explicit Reach/profile/table_z config",
+    "production-only LOC1 helpers; offline truth helpers omitted",
+    "native bounded-DLS final target semantics retained; common reset/ACK accounting adapter",
+    "new adapter not yet validated in live Isaac or real robot"
+  ]
+}

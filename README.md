@@ -1,3 +1,7 @@
+# Plug-in-charger sim / real experiments (2026-11-03)
+
+三组代码、workspace 与运行命令见 [快速开始](docs/plug_in_charger/README.md)；真机接入交接见 [ARX X5 2023 TODO](docs/plug_in_charger/REAL_TODO.md)。原参考说明如下。
+
 <div align="center">
 
 # Where is Physical RSI capability from?<br>An Observational Scaling Law of LLM-as-policy

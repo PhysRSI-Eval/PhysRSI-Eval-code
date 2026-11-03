@@ -115,13 +115,20 @@ class ToolHost:
         if args != {}:
             raise ActionRejected('contract takes no arguments')
         prior = self.evidence.prior_outcomes(self.k) if self.evidence else None
-        return [text(P.public_contract(self.task, self.condition, prior_outcomes=prior,
-                                       phase='POST_TERMINAL' if self.closed else 'PHYSICAL_EPISODE'))]
+        value = P.public_contract(self.task, self.condition, prior_outcomes=prior,
+                                  phase='POST_TERMINAL' if self.closed else 'PHYSICAL_EPISODE')
+        profile = getattr(self.episode, 'robot_profile', {})
+        for key in ('robot', 'frame', 'eef_link', 'control_hz', 'proprioception', 'opening'):
+            if key in profile:
+                value[key] = profile[key]
+        return [text(value)]
 
     def start(self, args):
         if args != {}:
             raise ActionRejected('tool takes no actor reset/task/path override')
         content = self.episode.start()
+        from .workspace import bind_reset
+        bind_reset(self.workspace, self.episode.reset)
         if self.condition == 'Harness':
             packet = json.loads(content[0]['text'])
             packet['execution_budget'] = dict(phase='PHYSICAL_EPISODE')
@@ -174,6 +181,11 @@ class ToolHost:
                 return dict(success=False, contentItems=[text(dict(error='WORKSPACE_FILE_TOO_LARGE', path=args['path'],
                                                                   size_bytes=path.stat().st_size,
                                                                   limit_bytes=P.READ_LIMIT_BYTES))])
+            from .util import sha256
+            record = dict(path=args['path'], sha256=sha256(path), k=self.k,
+                          episode_id=getattr(self.episode, 'reset', {}).get('episode_id'), event='file_read')
+            with (self.episode.client / 'workspace-reads.jsonl').open('a') as log:
+                log.write(json.dumps(record) + '\n')
             return [text(path.read_text(errors='replace'))]
         if args['path'] == P.CLIENT_HELPER_PATH:
             raise ActionRejected('tools/mcp_client.py is host-provided and read-only')

@@ -1,0 +1,42 @@
+{
+  "inhand_v4/infer_v4.py": {
+    "source": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/v4/tool/infer_v4.py",
+    "source_sha256": "26662be03c31627713c25db5af9a2c0167c76d57b3d8affca7b80851d3929b55",
+    "packaged_sha256": "f847477167290fac91fb7de8ac00b06dc97972be366400a6d7b8c5cfae778a4b"
+  },
+  "inhand_v4/svc_inhand_v4.py": {
+    "source": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/v4/tool/svc_inhand_v4.py",
+    "source_sha256": "ffdf8d9e983ede7b21972f17e15207924cfbe5b24e23e376bfbacbd72ad61332",
+    "packaged_sha256": "263f821e14b1510fa5966ca9e27e53147f5e62761b6c17e6f982bf6848fc79af"
+  },
+  "inhand_v4/FROZEN-v4-charger.json": {
+    "source": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/v4/tool/FROZEN-v4-charger.json",
+    "source_sha256": "ab13a92f47363f157d243d64b70c8ea9ff120dbee694ef83042718309dd0afcf",
+    "packaged_sha256": "ab13a92f47363f157d243d64b70c8ea9ff120dbee694ef83042718309dd0afcf"
+  },
+  "inhand_v4/lib_v4.py": {
+    "source": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/v4/train/lib_v4.py",
+    "source_sha256": "b24ffe113459c79e8f689c4b04ef0df4028405d1fd806433f9fa1b597b6af1e8",
+    "packaged_sha256": "bf5aeac11262ed589d62cb238989f1c7b0d1fdc23d3b981047fa238c6c302a32"
+  },
+  "inhand_v4/solver_v4.py": {
+    "source": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/v4/train/solver_v4.py",
+    "source_sha256": "bdfdbb8073df46c3e129ec4e0e271aabf21d04466733bb35d42e2e1dbc38fb31",
+    "packaged_sha256": "bdfdbb8073df46c3e129ec4e0e271aabf21d04466733bb35d42e2e1dbc38fb31"
+  },
+  "inhand_v4/train_v4.py": {
+    "source": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/v4/train/train_v4.py",
+    "source_sha256": "70f89cfd7317b813fae8b32be2a8c7599c0fa3525493495964d368cef640a01b",
+    "packaged_sha256": "a074a66c21b1df816ecf45524c6ce37053aee7179b6f8e9b5b4b170c59c2f2c5"
+  },
+  "outlets/co_infer_service.py": {
+    "source": "h1005090:/lizekai/RSIws/experiments/combined-online-20261026/svc/co_infer_service.py",
+    "source_sha256": "78faf1e671ac8b09771eefceddc5022161b610a9b784ef9f79eed14cd3a2651e",
+    "packaged_sha256": "78faf1e671ac8b09771eefceddc5022161b610a9b784ef9f79eed14cd3a2651e"
+  },
+  "outlets/kpnet.py": {
+    "source": "h1005090:/lizekai/RSIws/experiments/combined-online-20261026/svc/kpnet.py",
+    "source_sha256": "9536eda43f30b0433e3420a26f4ca228aef882637c54b60902c54c8de71dc9b7",
+    "packaged_sha256": "9536eda43f30b0433e3420a26f4ca228aef882637c54b60902c54c8de71dc9b7"
+  }
+}

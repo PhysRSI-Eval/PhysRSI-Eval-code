@@ -1,0 +1,22 @@
+{
+  "robodojo_root": "/lizekai/RoboDojo",
+  "robodojo_python": "/lizekai/miniconda3/envs/RoboDojo/bin/python",
+  "runs_dir": "/lizekai/RSIws/runs/plug-three-arm",
+  "kit_cache_dir": null,
+  "ext_folders": [],
+  "gpu": 0,
+  "vulkan_index": null,
+  "layout_id": 0,
+  "extra_ld_library_path": null,
+  "program": {
+    "sandbox": "auto",
+    "python": "/usr/bin/python3"
+  },
+  "plug_tools": {
+    "profile": "configs/plug_in_charger/sim-tool-profile.json",
+    "infer_url": "http://127.0.0.1:18807",
+    "infer_url_v4": "http://127.0.0.1:18808",
+    "locate_url": "http://127.0.0.1:18806/locate",
+    "step_cap": 340
+  }
+}

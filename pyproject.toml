@@ -11,8 +11,9 @@ requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 dependencies = ["numpy", "scipy", "pillow", "msgpack", "imageio", "imageio-ffmpeg"]
 
-[tool.setuptools]
-packages = ["physrsi_eval"]
+[tool.setuptools.packages.find]
+include = ["physrsi_eval*"]
 
 [tool.setuptools.package-data]
 physrsi_eval = ["tool_specs.json"]
+"physrsi_eval.plug_tools" = ["*.json"]

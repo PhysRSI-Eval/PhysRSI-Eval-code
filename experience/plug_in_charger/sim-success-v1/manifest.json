@@ -1,0 +1,24 @@
+{
+  "schema": "physrsi-success-v1",
+  "task": "plug_in_charger",
+  "source_domain": "sim",
+  "native_success": true,
+  "episode_id": [
+    "ctx-677338bf42b24288-1-f144a448",
+    "ctx-677338bf42b24288-2-7c73fd32",
+    "ctx-677338bf42b24288-5-9ecc49a7",
+    "ctx-fae461ab18b74392-1-05e90e18"
+  ],
+  "kind": "archived-success-experience-reconstruction",
+  "active_files": [
+    "skills/plug-in-charger.md"
+  ],
+  "files": {
+    "README.md": "7e17d38fc9270d173c3dc8d49642f50fc8faecbf338f3381a3f66126a2b41feb",
+    "evidence/ctx-677338bf42b24288-1-f144a448.json": "5b3c2e72f06e60d99626c9b644dbc6e7c61ebc8c75f2526f0070aeba4e1e760d",
+    "evidence/ctx-677338bf42b24288-2-7c73fd32.json": "6d9b423ede45f1060288772c1d3a2d7ac37dfb455aceae5234818a8d6a745fc5",
+    "evidence/ctx-677338bf42b24288-5-9ecc49a7.json": "a5bceded469e4ab054c84dd8a862aae18ca101eb6d90129379f12345fbcf7348",
+    "evidence/ctx-fae461ab18b74392-1-05e90e18.json": "768e4e791c0d25370e935dacfad06fdf6ddb372500a47eacb63c73e240f02db5",
+    "portable/skills/plug-in-charger.md": "80166d2f2662f84a5b20359e3b2e5275676bf63d097672297f00df4cfddf150e"
+  }
+}

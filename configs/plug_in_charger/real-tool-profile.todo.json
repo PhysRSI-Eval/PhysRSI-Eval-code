@@ -1,0 +1,22 @@
+{
+  "backend": "real",
+  "calibration_source": "TODO_real_measured",
+  "controller_model": "dual_x5_bounded_dls_v1",
+  "calibration": null,
+  "robot_kin": null,
+  "tcp_offset": null,
+  "object_geometry": null,
+  "charger_vertices": null,
+  "width_calibration": null,
+  "table_z": null,
+  "hardware": {
+    "arms": "ARX X5 2023 (\u65b9\u821f\u65e0\u9650)",
+    "wrist_cameras": {
+      "RealSense D345": 2,
+      "RealSense D405": 2
+    },
+    "head_camera": "Gemini D335L",
+    "camera_model_names": "user-provided; verify serials/SDK mapping at integration"
+  },
+  "inference_calibration_id": null
+}

@@ -103,7 +103,7 @@ def _has_cjk(text):
     return any('㐀' <= c <= '鿿' or '\U00020000' <= c <= '\U000323af' for c in text)
 
 
-def validate_action(args, request, current_eef):
+def validate_action(args, request, current_eef, *, executor=False):
     """The shared action bounds: one EEF target per arm within 5 cm / 0.35 rad of the current pose."""
     Rotation = _rotation()
     if not isinstance(args, dict) or args.get('request_id') != request['request_id']:
@@ -128,18 +128,18 @@ def validate_action(args, request, current_eef):
             raise ActionRejected('Finite EEF position/quaternion required')
         if abs(np.linalg.norm(q) - 1) > 1e-4 or type(t['gripper_closed']) is not bool:
             raise ActionRejected('Unit quaternion and explicit boolean gripper required')
-        if np.linalg.norm(p - np.asarray(current_eef[arm]['position'])) > MAX_TRANSLATION_M + 1e-9:
+        if not executor and np.linalg.norm(p - np.asarray(current_eef[arm]['position'])) > MAX_TRANSLATION_M + 1e-9:
             raise ActionRejected('EEF target exceeds 5 cm')
         old = np.asarray(current_eef[arm]['quaternion_wxyz'])
         delta = Rotation.from_quat(q[[1, 2, 3, 0]]) * Rotation.from_quat(old[[1, 2, 3, 0]]).inv()
-        if delta.magnitude() > MAX_ROTATION_RAD + 1e-9:
+        if not executor and delta.magnitude() > MAX_ROTATION_RAD + 1e-9:
             raise ActionRejected('EEF target exceeds 0.35 rad')
 
 
 class Episode:
     """One assigned episode: start once, act until the native end, then finish (grade)."""
 
-    def __init__(self, task, port, sim_output, client_dir, layout_id=0):
+    def __init__(self, task, port, sim_output, client_dir, layout_id=0, *, rpc_host='127.0.0.1', robot_profile=None):
         self.task, self.port, self.layout_id = task, port, layout_id
         self.sim_output, self.client = Path(sim_output), Path(client_dir)
         self.client.mkdir(parents=True, exist_ok=True)
@@ -148,15 +148,20 @@ class Episode:
         self.request = None
         self.outcome = None
         self.started = False
+        self.start_attempted = False
+        self.rpc_host = rpc_host
+        self.robot_profile = robot_profile or {}
+        self.unknown_action = False
 
     @property
     def closed(self):
         return self.outcome is not None
 
     def start(self):
-        if self.started:
-            raise ActionRejected('assigned episode already started')
-        self.rpc = RPCClient(self.port)
+        if self.started or self.start_attempted:
+            raise ActionRejected('assigned episode start already attempted; never retry ambiguous reset')
+        self.start_attempted = True
+        self.rpc = RPCClient(self.port, host=self.rpc_host)
         meta = self.rpc.request('metadata')
         if meta['task'] != self.task['task_id']:
             raise RuntimeError('launched task differs from the assigned task')
@@ -176,7 +181,7 @@ class Episode:
             q = np.asarray(obs['eef_quaternions_wxyz'][i], float)
             eef[arm] = dict(position=np.asarray(obs['eef_positions'][i]).tolist(), quaternion_wxyz=q.tolist(),
                             rpy_deg=Rotation.from_quat(q[[1, 2, 3, 0]]).as_euler('xyz', degrees=True).tolist(),
-                            frame='environment_origin', link='link6',
+                            frame=self.robot_profile.get('frame', 'environment_origin'), link=self.robot_profile.get('eef_link', 'link6'),
                             gripper_opening_command=float(obs['states'][i * 7 + 6]))
         return eef
 
@@ -191,7 +196,7 @@ class Episode:
                       max_episode_steps=self.reset['max_episode_steps'],
                       instruction=self.task['public_instruction'], remaining_steps=obs['remaining_steps'],
                       current_state=np.asarray(obs['states']).tolist(), current_eef=self.current_eef,
-                      task_context=dict(task_definition=self.task['public_task']), robot_profile='robodojo',
+                      task_context=dict(task_definition=self.task['public_task']), robot_profile=self.robot_profile.get('robot', 'robodojo'),
                       request_id=None if finished else uuid.uuid4().hex, rollout_finished=finished,
                       result=result, previous_result=self.history[-1] if self.history else None)
         self.request = packet
@@ -218,16 +223,42 @@ class Episode:
                         dict(type='inputImage', imageUrl=jpeg_url(np.asarray(Image.open(folder / f'{camera}.png'))))]
         return content
 
-    def act(self, args):
+    def act(self, args, *, tool_action=False):
         if not self.started:
             raise ActionRejected('native action before robodojo_start')
         if self.closed:
             raise ActionRejected('native episode is closed')
-        validate_action(args, self.request, self.current_eef)
+        if self.unknown_action:
+            raise RuntimeError('unknown physical action: inspect ACKs; do not replay')
+        if tool_action:
+            # Continuous opening is an executor-only extension; baseline actor schema stays unchanged.
+            import copy
+            bounded = copy.deepcopy(args)
+            for t in bounded.get('target', {}).values():
+                opening = t.pop('gripper_opening', None)
+                if opening is not None and (type(opening) not in (float, int) or not np.isfinite(opening) or not 0 <= opening <= 1):
+                    raise ActionRejected('invalid continuous opening')
+            validate_action(bounded, self.request, self.current_eef, executor=True)
+        else:
+            validate_action(args, self.request, self.current_eef)
         decision = len(self.history)
         write_json(self.client / f'response_{decision:03d}.json', args)
         start = self.request['step_id']
-        ack = self.rpc.request('act', targets=args['target'], steps=args['steps'])
+        pending = self.client / 'pending-action.json'
+        write_json(pending, dict(request_id=args['request_id'], start_tick=start, response=args))
+        try:
+            extra = {'executor': True} if tool_action else {}
+            ack = self.rpc.request('act', targets=args['target'], steps=args['steps'], **extra)
+            if (type(ack.get('executed_steps')) is not int or not 0 < ack['executed_steps'] <= args['steps']
+                    or ack.get('step_id') != start + ack['executed_steps']):
+                raise RuntimeError('action ACK step mismatch')
+            if any(type(ack.get(k)) is not bool for k in ('terminated', 'truncated', 'success')):
+                raise RuntimeError('action ACK terminal flags missing')
+        except Exception:
+            self.unknown_action = True
+            raise
+        write_json(self.client / f'ack_{decision:03d}.json', ack)
+        pending.unlink()
         done = ack['terminated'] or ack['truncated']
         self.history.append(dict(decision=decision, start_tick=start, end_tick=ack['step_id'], response=args,
                                  executed_steps=ack['executed_steps'], terminal=done, native_success=ack['success']))
@@ -239,6 +270,8 @@ class Episode:
 
     def finish(self, reason):
         """Close physical actions and grade. reason: native_terminal | actor_completed | effective_reasoning_time_limit."""
+        if self.unknown_action:
+            raise RuntimeError('UNKNOWN physical state; finish is not replayed')
         if self.outcome is None:
             if not self.started:
                 self.outcome = dict(reason=reason, valid=False, native_success=False, native_score=0.0,

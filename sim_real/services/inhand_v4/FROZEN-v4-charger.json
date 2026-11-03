@@ -1,0 +1,17 @@
+{
+ "model": "in-hand pose v4 (PREREG-IP-v4 + A1-A3), charger only",
+ "verdict": "PARTIAL: charger PASS (TEST-S 0.50 mm / 0.60 deg cov 97 %; TEST-L 0.36 / 0.45 cov 99 %)",
+ "members": [
+  {
+   "path": "model/best_s0.pt",
+   "sha256": "443d9baffbb62140a111e35b991f9984b2c7ca48639df500ec443d4a7a67808e"
+  },
+  {
+   "path": "model/best_s1.pt",
+   "sha256": "daca1aa819a2d38fe18670e8526951b7f014d6eef42c0f17394b10615055f1e1"
+  }
+ ],
+ "calib": "results/CALIB-IP-v4.json",
+ "cad": "cad/objects_cad_v4.json (charger_0)",
+ "judge": "results/JUDGE-IP-v4.json"
+}

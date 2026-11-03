@@ -136,7 +136,7 @@ class DualKinematics:
             key = self.manager.robot_key[self.manager.robot_list.index(robot)]
             limits = key.data.soft_joint_pos_limits[0, robot.arm_joint_indices].cpu().numpy()
             joints = self.fk[arm].bounded_step(self.manager.get_joint(robot)[0], limits, self.root(arm), target)
-            action.extend([*joints.tolist(), float(not target['gripper_closed'])])
+            action.extend([*joints.tolist(), float(target.get('gripper_opening', not target['gripper_closed']))])
         return np.asarray(action, np.float32)
 
 
@@ -203,7 +203,7 @@ class Session:
         write_json(self.output / 'reset.json', result)
         return result
 
-    def act(self, targets, steps):
+    def act(self, targets, steps, executor=False):
         """Up to `steps` control ticks toward fixed EEF targets; stops early at the native end."""
         require(not (self.finished or self.terminated or self.truncated), 'episode finished')
         require(type(steps) is int and 1 <= steps <= 5, 'steps must be 1..5')

@@ -1,0 +1,43 @@
+{
+  "assets": [
+    {
+      "kind": "inhand_v4_weight",
+      "address": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/v4/model/best_s0.pt",
+      "sha256": "443d9baffbb62140a111e35b991f9984b2c7ca48639df500ec443d4a7a67808e"
+    },
+    {
+      "kind": "inhand_v4_weight",
+      "address": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/v4/model/best_s1.pt",
+      "sha256": "daca1aa819a2d38fe18670e8526951b7f014d6eef42c0f17394b10615055f1e1"
+    },
+    {
+      "kind": "outlets_keypoint_weight",
+      "address": "h1005090:/lizekai/RSIws/experiments/loc1-20261026/pkg/kp-v1.pt",
+      "sha256": "ceaf22cbadcbd3af6eb457a6c19e9761c2fc97c1f4618306cd0c4d0cf184b3a9"
+    },
+    {
+      "kind": "dinov3_snapshot",
+      "address": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/model_v1/pkg/v1pkg_1026/dinov3-vitb16"
+    },
+    {
+      "kind": "inhand_data_and_sim_calibration",
+      "address": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/v4",
+      "include": [
+        "cad/",
+        "results/CALIB-IP-v4.json"
+      ]
+    },
+    {
+      "kind": "sim_wrist_calibration",
+      "address": "h1005090:/lizekai/RSIws/experiments/inhand-pose-20261026/train_v2/objects_v2.json"
+    },
+    {
+      "kind": "robot_urdf",
+      "address": "h1005090:/opt/PhysRSI/runtime/RoboDojo/Assets/Robots/x5/X5A.urdf",
+      "target": "/lizekai/RoboDojo/Assets/Robots/x5/X5A.urdf",
+      "sha256": "7aaa308a1a5b6a213d914db86ba09ddd6252f25cb498ac9a148bfa6c7166a423"
+    }
+  ],
+  "access": "SSH account required; not public URLs",
+  "coarse_localization": "site-provided endpoint; see sim_real/services/README.md"
+}
